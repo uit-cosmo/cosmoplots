@@ -76,3 +76,7 @@ From the code snippet above, the default `matplotlib` implementation creates:
 while the defaults set by `cosmoplots` give:
 
 ![cosmoplots](./assets/cosmoplots_y.png)
+
+| `matplotlib` | `cosmoplots` |
+| :--------: | :--------: |
+| ![vanilla matplotlib](./assets/vanilla_y.png) | ![cosmoplots](./assets/cosmoplots_y.png) |
