@@ -4,7 +4,6 @@
 from typing import List
 import numpy as np
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 """
 Definitions for figures and plots.
@@ -135,7 +134,7 @@ def set_rcparams_aip(
     return axes_size
 
 
-def set_rcparams_article_thickline(myParams):
+def set_rcparams_article_thickline(myParams: mpl.RcParams) -> None:
     """
     One 8cm column for the TCV paper, thicker lines for visibility
     """
@@ -176,7 +175,7 @@ def set_rcparams_article_thickline(myParams):
     myParams["ytick.right"] = True
 
 
-def set_rcparams_poster(myParams):
+def set_rcparams_poster(myParams: mpl.RcParams) -> None:
     """
     Make 12.5cm wide figures used in posters
     """
@@ -223,7 +222,7 @@ def set_rcparams_poster(myParams):
     myParams["ytick.right"] = True
 
 
-def set_rcparams_talk(myParams):
+def set_rcparams_talk(myParams: mpl.RcParams) -> mpl.RcParams:
     """
     Matplotlib configuration for talk graphics.
     Use for 16:9 aspect ratio in beamer slides
