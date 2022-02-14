@@ -49,7 +49,7 @@ def change_log_axis_base(axes: plt.Axes, which: str, base: float = 10) -> plt.Ax
         f = getattr(axes, ax)
         f.set_major_formatter(
             ticker.FuncFormatter(
-                lambda x, _: "{:g}".format(x)
+                lambda x, _: r"${:g}$".format(x)
                 if np.log(x) / np.log(base) in [0, 1]
                 else r"$"
                 + str(base)
