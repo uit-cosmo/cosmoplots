@@ -50,7 +50,7 @@ ax = fig.add_subplot()
 ax.set_xlabel("X Axis")
 ax.set_ylabel("Y Axis")
 ax.semilogy(a)
-# plt.savefig("assets/vanilla_y.png")
+# plt.savefig("assets/matplotlib.png")
 plt.show()
 
 # Cosmoplots --------------------------------------------------------------------------- #
@@ -64,10 +64,10 @@ cosmoplots.change_log_axis_base(ax, "y")
 ax.semilogy(a)
 # Commenting out the below line result in the default base10 ticks
 cosmoplots.change_log_axis_base(ax, "y")
-# plt.savefig("assets/cosmoplots_y.png")
+# plt.savefig("assets/cosmoplots.png")
 plt.show()
 ```
 
 | `matplotlib` | `cosmoplots` |
 | :--------: | :--------: |
-| ![vanilla matplotlib](./assets/vanilla_y.png) | ![cosmoplots](./assets/cosmoplots_y.png) |
+| ![matplotlib](./assets/matplotlib.png) | ![cosmoplots](./assets/cosmoplots.png) |
