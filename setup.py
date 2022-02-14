@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="cosmoplots",
-    version="0.1.0",
+    version="0.1.1",
     description="Definitions for figures and plots using matplotlib",
     author="Gregor Decristoforo",
     author_email="gregor.decristoforo@uit.no",
