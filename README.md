@@ -8,9 +8,9 @@ pip install cosmoplots
 # Use
 Set your `rcparams` before plotting in your code, for example:
 ```Python
-from cosmoplots import figure_defs
+import cosmoplots
 
-axes_size = figure_defs.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
+axes_size = cosmoplots.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
 ```
 
 ## `change_log_axis_base`
