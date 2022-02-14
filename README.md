@@ -1,2 +1,10 @@
 # cosmoplots
-Definitions for figures using matplotlib. Used by complex systems modelling group at UiT.
+Routines to get a sane default configuration for production quality plots. Used by complex systems modelling group at UiT.
+
+# Use
+Set your `rcparams` before plotting in your code, for example:
+```Python
+from cosmoplots import figure_defs
+
+axes_size = figure_defs.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
+```
