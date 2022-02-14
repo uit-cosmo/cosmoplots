@@ -69,14 +69,6 @@ cosmoplots.change_log_axis_base(ax, "y")
 plt.show()
 ```
 
-From the code snippet above, the default `matplotlib` implementation creates:
-
-![vanilla matplotlib](./assets/vanilla_y.png)
-
-while the defaults set by `cosmoplots` give:
-
-![cosmoplots](./assets/cosmoplots_y.png)
-
 | `matplotlib` | `cosmoplots` |
 | :--------: | :--------: |
 | ![vanilla matplotlib](./assets/vanilla_y.png) | ![cosmoplots](./assets/cosmoplots_y.png) |
