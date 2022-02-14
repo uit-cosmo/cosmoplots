@@ -22,7 +22,6 @@ import cosmoplots
 
 axes_size = cosmoplots.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
 a = np.exp(np.linspace(-3, 5, 100))
-# 1 --- Semilogx
 fig = plt.figure()
 ax = fig.add_axes(axes_size)
 ax.set_xlabel(r"$\textnormal{X Axis}$")
