@@ -6,12 +6,12 @@ from matplotlib import ticker
 
 
 def change_log_axis_base(axes: plt.Axes, which: str, base: float = 10) -> plt.Axes:
-    """Change the tick formatter.
+    """Change the tick formatter to not use powers 0 and 1 in logarithmic plots.
 
-    Change the logarithmic axes to use '1' and '10' (or the given base), i.e. without
-    power, otherwise use the base to some power. For more robust and less error prone
-    results, the plotting type is also re-set with the same base ('loglog', 'semilogx' and
-    'semilogy').
+    Change the logarithmic axes `10^0 -> 1` and `10^1 -> 10` (or the given base), i.e.
+    without power, otherwise use the base to some power. For more robust and less error
+    prone results, the plotting type is also re-set with the same base ('loglog',
+    'semilogx' and 'semilogy').
 
     Modified from: https://tinyurl.com/log-tick-formatting
 
