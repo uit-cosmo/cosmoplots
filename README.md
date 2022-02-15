@@ -2,11 +2,25 @@
 Routines to get a sane default configuration for production quality plots. Used by complex systems modelling group at UiT.
 
 # Installation
-```
+
+The package is published to PyPI and can be installed with
+
+```sh
 pip install cosmoplots
 ```
+
+If you want the development version you must first clone the repo to your local machine,
+then install the project and its dependencies with [poetry]:
+
+```sh
+git clone https://github.com/uit-cosmo/cosmoplots.git
+poetry install
+```
+
 # Use
+
 Set your `rcparams` before plotting in your code, for example:
+
 ```Python
 from cosmoplots import figure_defs
 
@@ -71,3 +85,6 @@ plt.show()
 | `matplotlib` | `cosmoplots` |
 | :--------: | :--------: |
 | ![matplotlib](./assets/matplotlib.png) | ![cosmoplots](./assets/cosmoplots.png) |
+
+<!-- Links -->
+[poetry]: https://python-poetry.org
