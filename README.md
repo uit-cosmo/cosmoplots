@@ -22,9 +22,9 @@ poetry install
 Set your `rcparams` before plotting in your code, for example:
 
 ```Python
-from cosmoplots import figure_defs
+import cosmoplots
 
-axes_size = figure_defs.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
+axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
 ```
 
 ## `change_log_axis_base`
@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cosmoplots
 
-axes_size = cosmoplots.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
+axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
 a = np.exp(np.linspace(-3, 5, 100))
 fig = plt.figure()
 ax = fig.add_axes(axes_size)
@@ -68,7 +68,7 @@ ax.semilogy(a)
 plt.show()
 
 # Cosmoplots --------------------------------------------------------------------------- #
-axes_size = cosmoplots.set_rcparams_aip(plt.rcParams, num_cols=1, ls="thin")
+axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
 a = np.exp(np.linspace(-3, 5, 100))
 fig = plt.figure()
 ax = fig.add_axes(axes_size)
