@@ -4,7 +4,6 @@
 from typing import List
 import numpy as np
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 """
 Definitions for figures and plots.
@@ -161,10 +160,13 @@ def set_rcparams_aip(
         The size of the axes.
     """
 
-    assert ls in ["thick", "thin"]
-    ls_dict = {"thick": 1.5, "thin": 0.5}
+    if ls not in ("thick", "thin"):
+        raise ValueError("ls must be either 'thick' or 'thin'")
+    linewidth = 0.75
+    if ls == "thick":
+        linewidth *= 2
 
-    assert num_cols in [1, 2]
+    fontsize = 8
 
     # Define axis size to be used
     if num_cols == 1:
@@ -179,11 +181,6 @@ def set_rcparams_aip(
     # Figure size in inch
     fig_width_in = num_cols * 3.37
     fig_height_in = 3.37 / golden_ratio
-    # figure size in pts
-    fig_width_pt = fig_width_in * fig_dpi
-    fig_height_pt = fig_height_in * fig_dpi
-    # print 'Figure size: %4.2f"" x %4.2f""' % (fig_width_in, fig_height_in)
-    # print 'Figure resolution: %d dpi' % fig_dpi
 
     myParams["font.family"] = "Times"
     myParams["font.size"] = 8
@@ -195,18 +192,38 @@ def set_rcparams_aip(
     myParams["lines.linewidth"] = ls_dict[ls]
     myParams["figure.dpi"] = 300
     myParams["figure.figsize"] = [fig_width_in, fig_height_in]
-    myParams["text.usetex"] = True
-    myParams["savefig.dpi"] = 300
-    myParams["pdf.fonttype"] = 42
+    myParams["savefig.dpi"] = fig_dpi
 
+    # Figure legend
+    myParams["legend.framealpha"] = 1.0
+    myParams["legend.fancybox"] = False
+    myParams["legend.edgecolor"] = "k"
+    myParams["patch.linewidth"] = 0.5  # For legend box borders
+    myParams["legend.handlelength"] = 1.45  # Show nice, even
+    # numbers for different line styles
+
+    # Font and text
+    myParams["text.usetex"] = True
+    myParams["pdf.fonttype"] = 42
+    myParams["font.family"] = "Times"
+    myParams["font.size"] = fontsize
+    myParams["axes.labelsize"] = fontsize
+    myParams["legend.fontsize"] = fontsize
+
+    # Line size and marker size
+    myParams["lines.markersize"] = 3.0 * linewidth
+    myParams["lines.linewidth"] = linewidth
+
+    # Axes thickness
+    myParams["axes.linewidth"] = 0.5
     # Enable minor ticks
-    # myParams['ytick.minor.visible'] = True
-    # myParams['xtick.minor.visible'] = True
+    myParams["ytick.minor.visible"] = True
+    myParams["xtick.minor.visible"] = True
     # Default ticks on both sides of the axes
-    # myParams["xtick.top"] = True
-    # myParams["xtick.bottom"] = True
-    # myParams["ytick.left"] = True
-    # myParams["ytick.right"] = True
+    myParams["xtick.top"] = True
+    myParams["xtick.bottom"] = True
+    myParams["ytick.left"] = True
+    myParams["ytick.right"] = True
     # All ticks point inward
     myParams["xtick.direction"] = "in"
     myParams["ytick.direction"] = "in"
@@ -214,7 +231,7 @@ def set_rcparams_aip(
     return axes_size
 
 
-def set_rcparams_article_thickline(myParams: mpl.RcParams):
+def set_rcparams_article_thickline(myParams: mpl.RcParams) -> None:
     """
     One 8cm column for the TCV paper, thicker lines for visibility
     """
@@ -255,7 +272,7 @@ def set_rcparams_article_thickline(myParams: mpl.RcParams):
     myParams["ytick.right"] = True
 
 
-def set_rcparams_poster(myParams: mpl.RcParams):
+def set_rcparams_poster(myParams: mpl.RcParams) -> None:
     """
     Make 12.5cm wide figures used in posters
     """
@@ -273,6 +290,7 @@ def set_rcparams_poster(myParams: mpl.RcParams):
     myParams["figure.figsize"] = [fig_width_in, fig_height_in]
 
     # Set text parameters etc.
+    myParams["font.family"] = "Times"
     myParams["font.size"] = 16
     myParams["axes.labelsize"] = 16
     myParams["legend.fontsize"] = 12
@@ -302,7 +320,7 @@ def set_rcparams_poster(myParams: mpl.RcParams):
     myParams["ytick.right"] = True
 
 
-def set_rcparams_talk(myParams: mpl.RcParams):
+def set_rcparams_talk(myParams: mpl.RcParams) -> mpl.RcParams:
     """
     Matplotlib configuration for talk graphics.
     Use for 16:9 aspect ratio in beamer slides
