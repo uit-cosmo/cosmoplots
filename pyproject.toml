@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cosmoplots"
-version = "0.1.3"
+version = "0.1.4"
 description = "Routines to get a sane default configuration for production quality plots."
 homepage = "https://github.com/uit-cosmo/cosmoplots"
 authors = ["gregordecristoforo <gregor.decristoforo@gmail.com>"]
