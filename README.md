@@ -14,6 +14,7 @@ then install the project and its dependencies with [poetry]:
 
 ```sh
 git clone https://github.com/uit-cosmo/cosmoplots.git
+cd cosmoplots
 poetry install
 ```
 
