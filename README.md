@@ -18,7 +18,7 @@ cd cosmoplots
 poetry install
 ```
 
-## Use
+## Usage
 
 Set your `rcparams` before plotting in your code, for example:
 
