@@ -3,7 +3,7 @@ testtesttest
 
 Routines to get a sane default configuration for production quality plots. Used by complex systems modelling group at UiT.
 
-# Installation
+## Installation
 
 The package is published to PyPI and can be installed with
 
@@ -16,10 +16,11 @@ then install the project and its dependencies with [poetry]:
 
 ```sh
 git clone https://github.com/uit-cosmo/cosmoplots.git
+cd cosmoplots
 poetry install
 ```
 
-# Use
+## Usage
 
 Set your `rcparams` before plotting in your code, for example:
 
