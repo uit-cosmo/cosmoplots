@@ -1,5 +1,4 @@
 # cosmoplots
-testtesttest
 
 Routines to get a sane default configuration for production quality plots. Used by complex systems modelling group at UiT.
 
