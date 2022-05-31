@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cosmoplots"
-version = "0.1.5"
+version = "0.1.6"
 description = "Routines to get a sane default configuration for production quality plots."
 homepage = "https://github.com/uit-cosmo/cosmoplots"
 authors = ["gregordecristoforo <gregor.decristoforo@gmail.com>"]
@@ -9,8 +9,6 @@ readme = 'README.md'
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-
-[tool.poetry.dev-dependencies]
 numpy = ">=1.15.0"
 matplotlib = ">=3.3.2"
 
