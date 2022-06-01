@@ -176,8 +176,6 @@ def set_rcparams_dynamo(
         2 columns = 6.69" by 4.13"
     ls: str
         Either 'thick' or 'thin'. Defaults to 'thin'
-    fonts: str
-        Either 'small' or 'large'.
 
     Returns
     -------
