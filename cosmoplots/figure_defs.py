@@ -39,65 +39,67 @@ symbol_list_1 = ["o"]
 
 
 class Elements:
-    """Settings class for plotting elements.
+    """Elements class for plotting elements.
 
     More colour schemes can be found at https://vega.github.io/vega/docs/schemes/
     """
 
-    def __init__(self, amount) -> None:
-        """Initialize the Bullets object."""
+    def __init__(self, amount: int) -> None:
+        """Initialize the Elements object."""
         self.amount = amount
 
-    def _colour_list_5(self) -> List:
+    def _colour_list_5(self) -> List[str]:
         """For 5 symbols in a plot.
 
+        Notes
+        -----
         First five from https://vega.github.io/vega/docs/schemes/#category10
         """
         return ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
-    def _colour_list_4(self) -> List:
+    def _colour_list_4(self) -> List[str]:
         """For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible."""
         raise NotImplementedError
 
-    def _colour_list_3(self) -> List:
+    def _colour_list_3(self) -> List[str]:
         """3 symbols in a plot."""
         raise NotImplementedError
 
-    def _colour_list_2(self) -> List:
+    def _colour_list_2(self) -> List[str]:
         """2 symbols in a plot."""
         raise NotImplementedError
 
-    def _colour_list_1(self) -> List:
+    def _colour_list_1(self) -> List[str]:
         """1 symbol."""
         raise NotImplementedError
 
-    def _symbol_list_5(self) -> List:
+    def _symbol_list_5(self) -> List[str]:
         """For 5 symbols in a plot."""
         return ["^", "s", "o", "d", "v"]
 
-    def _symbol_list_4(self) -> List:
+    def _symbol_list_4(self) -> List[str]:
         """For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible."""
         return ["^", "s", "d", "v"]
 
-    def _symbol_list_3(self) -> List:
+    def _symbol_list_3(self) -> List[str]:
         """3 symbols in a plot."""
         return ["^", "o", "v"]
 
-    def _symbol_list_2(self) -> List:
+    def _symbol_list_2(self) -> List[str]:
         """2 symbols in a plot."""
         return ["^", "v"]
 
-    def _symbol_list_1(self) -> List:
+    def _symbol_list_1(self) -> List[str]:
         """1 symbol."""
         return ["o"]
 
-    def _symbols_not_found(self):
+    def _symbols_not_found(self) -> List[str]:
         """Raise an exception if the requested symbol list is not found."""
         print(f"We do not yet have a symbol list for '{self.amount}' elements.")
         print("Using the default symbol list of 5.")
         return getattr(self, f"_symbol_list_{5}")()
 
-    def _colours_not_found(self):
+    def _colours_not_found(self) -> List[str]:
         """Raise an exception if the requested colour list is not found."""
         print(f"We do not yet have a colour list for '{self.amount}' elements.")
         print("Using the default colour list of 5.")
@@ -105,17 +107,17 @@ class Elements:
 
     @property
     def symbols(self) -> List[str]:
-        """Return a list of symbols."""
+        """Return a list of `self.amount` symbols."""
         return getattr(self, f"_symbol_list_{self.amount}", self._symbols_not_found)()
 
     @property
     def colours(self) -> List[str]:
-        """Return a list of colours."""
+        """Return a list of `self.amount` colours."""
         return getattr(self, f"_colour_list_{self.amount}", self._colours_not_found)()
 
     @property
     def elements(self) -> Tuple[List[str], List[str]]:
-        """Return lists of symbols and colours, respectively.
+        """Return lists of `self.amount` symbols and colours, respectively.
 
         Returns
         -------
