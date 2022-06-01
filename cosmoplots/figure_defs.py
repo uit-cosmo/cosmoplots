@@ -1,12 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: UTF-8 -*-
+"""Definitions for figures and plots.
 
-from typing import List, Tuple
-import numpy as np
-import matplotlib as mpl
-
-"""
-Definitions for figures and plots.
 Use the set_rcparams_.... routines to get a sane default configuration
 for production quality plots.
 Some guidelines when creating plots
@@ -21,6 +16,11 @@ High         ^         C0 #1f77b4
 Low          v         C4 #9467bd
 Color are robust on both, screen, print, projector.
 """
+
+from typing import List, Tuple
+
+import matplotlib as mpl
+import numpy as np
 
 # For 5 symbols in a plot
 symbol_list_5 = ["^", "s", "o", "d", "v"]
