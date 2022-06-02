@@ -51,9 +51,12 @@ class Elements:
     def _colour_list_5(self) -> List[str]:
         """For 5 symbols in a plot.
 
-        Notes
-        -----
         First five from https://vega.github.io/vega/docs/schemes/#category10
+
+        Returns
+        -------
+        List[str]
+            List of 5 colours.
         """
         return ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
@@ -287,8 +290,18 @@ def set_rcparams_poster(myParams: mpl.RcParams) -> None:
 def set_rcparams_talk(myParams: mpl.RcParams) -> mpl.RcParams:
     """Matplotlib configuration for talk graphics.
 
-    Use for 16:9 aspect ratio in beamer slides
-    Slides are 16cm * 9cm, figure is 7.5cm wide
+    Use for 16:9 aspect ratio in beamer slides. Slides are 16cm * 9cm, figure is 7.5cm
+    wide.
+
+    Parameters
+    ----------
+    myParams: matplotlib.RcParams
+        The parameters from `matplotlib`.
+
+    Returns
+    -------
+    matplotlib.RcParams
+        The modified `matplotlib` parameters.
     """
     set_rcparams_dynamo(myParams, ls="thick")
     golden_ratio = 0.5 * (1.0 + np.sqrt(5.0))
