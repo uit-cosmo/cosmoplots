@@ -22,21 +22,6 @@ from typing import List, Tuple
 import matplotlib as mpl
 import numpy as np
 
-# For 5 symbols in a plot
-symbol_list_5 = ["^", "s", "o", "d", "v"]
-
-# For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible
-symbol_list_4 = ["^", "s", "d", "v"]
-
-# 3 symbols in a plot
-symbol_list_3 = ["^", "o", "v"]
-
-# 2 symbols in a plot
-symbol_list_2 = ["^", "v"]
-
-# 1 symbol
-symbol_list_1 = ["o"]
-
 
 class Elements:
     """Elements class for plotting elements.
