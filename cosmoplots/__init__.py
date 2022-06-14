@@ -1,3 +1,8 @@
+"""Main module for the ``cosmoplots`` package.
+
+See ``help(cosmoplots.axes)`` and ``help(cosmoplots.figure_defs)`` for more information.
+"""
+
 from .figure_defs import *
 from .axes import *
 

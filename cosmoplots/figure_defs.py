@@ -23,7 +23,7 @@ import matplotlib as mpl
 import numpy as np
 
 
-class Elements:
+class _Elements:
     """Elements class for plotting elements.
 
     More colour schemes can be found at https://vega.github.io/vega/docs/schemes/
@@ -120,8 +120,12 @@ class Elements:
         )
 
 
-def get(amount: int = 5) -> Elements:
+def get(amount: int = 5) -> _Elements:
     r"""Return an Elements object with the given amount of elements.
+
+    Use this function by appending ``.elements``, ``.symbols`` or ``.colours``, as shown
+    in the example below, or see ``help(cosmoplots.get(5))`` to see all available
+    options.
 
     Parameters
     ----------
@@ -144,7 +148,7 @@ def get(amount: int = 5) -> Elements:
     ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
     (['^', 's', 'o', 'd', 'v'], ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'])
     """
-    return Elements(amount)
+    return _Elements(amount)
 
 
 def set_rcparams_dynamo(
