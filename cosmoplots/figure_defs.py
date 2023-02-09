@@ -85,13 +85,13 @@ class _Elements:
         """Raise an exception if the requested symbol list is not found."""
         print(f"We do not yet have a symbol list for '{self.amount}' elements.")
         print("Using the default symbol list of 5.")
-        return getattr(self, f"_symbol_list_{5}")()
+        return getattr(self, "_symbol_list_5")()
 
     def _colours_not_found(self) -> List[str]:
         """Raise an exception if the requested colour list is not found."""
         print(f"We do not yet have a colour list for '{self.amount}' elements.")
         print("Using the default colour list of 5.")
-        return getattr(self, f"_colour_list_{5}")()
+        return getattr(self, "_colour_list_5")()
 
     @property
     def symbols(self) -> List[str]:
