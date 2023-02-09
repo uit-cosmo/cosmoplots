@@ -1,12 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: UTF-8 -*-
+"""Definitions for figures and plots.
 
-from typing import List
-import numpy as np
-import matplotlib as mpl
-
-"""
-Definitions for figures and plots.
 Use the set_rcparams_.... routines to get a sane default configuration
 for production quality plots.
 Some guidelines when creating plots
@@ -18,24 +13,142 @@ High         ^         C0 #1f77b4
  ^           s         C1 #ff7f0e
  |           o         C2 #2ca02c
  v           d         C3 #d62728
-Low          v         C4 #d9467bd
+Low          v         C4 #9467bd
 Color are robust on both, screen, print, projector.
 """
 
-# For 5 symbols in a plot
-symbol_list_5 = ["^", "s", "o", "d", "v"]
+from typing import List, Tuple
 
-# For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible
-symbol_list_4 = ["^", "s", "d", "v"]
+import matplotlib as mpl
+import numpy as np
 
-# 3 symbols in a plot
-symbol_list_3 = ["^", "o", "v"]
 
-# 2 symbols in a plot
-symbol_list_2 = ["^", "v"]
+class _Elements:
+    """Elements class for plotting elements.
 
-# 1 symbol
-symbol_list_1 = ["o"]
+    More colour schemes can be found at https://vega.github.io/vega/docs/schemes/
+    """
+
+    def __init__(self, amount: int) -> None:
+        """Initialize the Elements object."""
+        self.amount = amount
+
+    def _colour_list_5(self) -> List[str]:
+        """For 5 symbols in a plot.
+
+        First five from https://vega.github.io/vega/docs/schemes/#category10
+
+        Returns
+        -------
+        List[str]
+            List of 5 colours.
+        """
+        return ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
+
+    def _colour_list_4(self) -> List[str]:
+        """For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible."""
+        raise NotImplementedError
+
+    def _colour_list_3(self) -> List[str]:
+        """3 symbols in a plot."""
+        raise NotImplementedError
+
+    def _colour_list_2(self) -> List[str]:
+        """2 symbols in a plot."""
+        raise NotImplementedError
+
+    def _colour_list_1(self) -> List[str]:
+        """1 symbol."""
+        raise NotImplementedError
+
+    def _symbol_list_5(self) -> List[str]:
+        """For 5 symbols in a plot."""
+        return ["^", "s", "o", "d", "v"]
+
+    def _symbol_list_4(self) -> List[str]:
+        """For 4 symbols in a plot and below, avoid red and green (colorblindness) if possible."""
+        return ["^", "s", "d", "v"]
+
+    def _symbol_list_3(self) -> List[str]:
+        """3 symbols in a plot."""
+        return ["^", "o", "v"]
+
+    def _symbol_list_2(self) -> List[str]:
+        """2 symbols in a plot."""
+        return ["^", "v"]
+
+    def _symbol_list_1(self) -> List[str]:
+        """1 symbol."""
+        return ["o"]
+
+    def _symbols_not_found(self) -> List[str]:
+        """Raise an exception if the requested symbol list is not found."""
+        print(f"We do not yet have a symbol list for '{self.amount}' elements.")
+        print("Using the default symbol list of 5.")
+        return getattr(self, "_symbol_list_5")()
+
+    def _colours_not_found(self) -> List[str]:
+        """Raise an exception if the requested colour list is not found."""
+        print(f"We do not yet have a colour list for '{self.amount}' elements.")
+        print("Using the default colour list of 5.")
+        return getattr(self, "_colour_list_5")()
+
+    @property
+    def symbols(self) -> List[str]:
+        """Return a list of `self.amount` symbols."""
+        return getattr(self, f"_symbol_list_{self.amount}", self._symbols_not_found)()
+
+    @property
+    def colours(self) -> List[str]:
+        """Return a list of `self.amount` colours."""
+        return getattr(self, f"_colour_list_{self.amount}", self._colours_not_found)()
+
+    @property
+    def elements(self) -> Tuple[List[str], List[str]]:
+        """Return lists of `self.amount` symbols and colours, respectively.
+
+        Returns
+        -------
+        symbols : List[str]
+            List of symbols.
+        colours : List[str]
+            List of colours.
+        """
+        return (
+            getattr(self, f"_symbol_list_{self.amount}", self._symbols_not_found)(),
+            getattr(self, f"_colour_list_{self.amount}", self._colours_not_found)(),
+        )
+
+
+def get(amount: int = 5) -> _Elements:
+    r"""Return an Elements object with the given amount of elements.
+
+    Use this function by appending ``.elements``, ``.symbols`` or ``.colours``, as shown
+    in the example below, or see ``help(cosmoplots.get(5))`` to see all available
+    options.
+
+    Parameters
+    ----------
+    amount : int
+        The amount of elements.
+
+    Returns
+    -------
+    Elements
+        An Elements object with the given amount of elements.
+
+    Examples
+    --------
+    >>> import cosmoplots
+    >>> a = cosmoplots.get(2).symbols
+    >>> b = cosmoplots.get(5).colours
+    >>> c = cosmoplots.get(5).elements
+    >>> print(a, b, c, sep="\n")
+    ['^', 'v']
+    ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
+    (['^', 's', 'o', 'd', 'v'], ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'])
+    """
+    return _Elements(amount)
 
 
 def set_rcparams_dynamo(
@@ -55,8 +168,6 @@ def set_rcparams_dynamo(
         2 columns = 6.69" by 4.13"
     ls: str
         Either 'thick' or 'thin'. Defaults to 'thin'
-    fonts: str
-        Either 'small' or 'large'.
 
     Returns
     -------
@@ -68,7 +179,6 @@ def set_rcparams_dynamo(
     ValueError
         If the number of columns is not 1 or 2.
     """
-
     golden_ratio = 0.5 * (1.0 + np.sqrt(5.0))
     fig_dpi = 300.0
     fontsize = 8
@@ -134,9 +244,7 @@ def set_rcparams_dynamo(
 
 
 def set_rcparams_article_thickline(myParams: mpl.RcParams) -> None:
-    """
-    One 8cm column for the TCV paper, thicker lines for visibility
-    """
+    """One 8cm column for the TCV paper, thicker lines for visibility."""
     set_rcparams_dynamo(myParams, ls="thick")
 
     # Re-sets:
@@ -144,9 +252,7 @@ def set_rcparams_article_thickline(myParams: mpl.RcParams) -> None:
 
 
 def set_rcparams_poster(myParams: mpl.RcParams) -> None:
-    """
-    Make 12.5cm wide figures used in posters
-    """
+    """Make 12.5cm wide figures used in posters."""
     set_rcparams_dynamo(myParams, ls="thick")
     golden_ratio = 0.5 * (1.0 + np.sqrt(5.0))
     fontsize = 8
@@ -171,10 +277,20 @@ def set_rcparams_poster(myParams: mpl.RcParams) -> None:
 
 
 def set_rcparams_talk(myParams: mpl.RcParams) -> mpl.RcParams:
-    """
-    Matplotlib configuration for talk graphics.
-    Use for 16:9 aspect ratio in beamer slides
-    Slides are 16cm * 9cm, figure is 7.5cm wide
+    """Matplotlib configuration for talk graphics.
+
+    Use for 16:9 aspect ratio in beamer slides. Slides are 16cm * 9cm, figure is 7.5cm
+    wide.
+
+    Parameters
+    ----------
+    myParams: matplotlib.RcParams
+        The parameters from `matplotlib`.
+
+    Returns
+    -------
+    matplotlib.RcParams
+        The modified `matplotlib` parameters.
     """
     set_rcparams_dynamo(myParams, ls="thick")
     golden_ratio = 0.5 * (1.0 + np.sqrt(5.0))
