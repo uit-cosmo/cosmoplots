@@ -65,7 +65,7 @@ print(color_list)
 ```
 | `colors` |
 | :--------: | 
-| ![generate_hex_colors](./assets/color_test.png) |
+| ![colors](./assets/color_test.png) |
 
 
 ## `matplotlib` vs. `cosmoplots` defaults
