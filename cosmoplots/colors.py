@@ -6,7 +6,7 @@ from matplotlib import cm, colors
 from typing import List
 
 
-def make_color_swatch(color_list: list):
+def make_color_swatch(color_list: list) -> LinearSegmentedColormap:
     """
     Generate plot of the desired color swatches. This is useful if you want to see what the swatches look like.
     This function is used in generate_hex_colors() where the plot of the swatches will show by default if used in Jupyter Notebook.
@@ -18,7 +18,7 @@ def make_color_swatch(color_list: list):
 
     Returns
     -------
-    color_swatch:
+    color_swatch: LinearSegmentedColormap
         A plot of the color swatches
     """
 
