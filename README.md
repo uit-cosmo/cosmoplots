@@ -105,7 +105,8 @@ color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, asce
 plt.savefig("./assets/color_test.png")
 
 # Print color_list to retrieve the hex numbers
-print(color_list)
+['#fde725', '#5ec962', '#21918c', '#3b528b', '#440154']
+
 ```
 | `colors` |
 | :--------: | 
