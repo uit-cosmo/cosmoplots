@@ -94,9 +94,8 @@ plt.show()
 
 ## `generate_hex_colors`
 
-This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the the number of points of interest.
-The plot is there for reference to show what the swatches would look like if the function is used in  a Jupyter Notebook.
-
+This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the number of points of interest.
+The colors change gradually from bright to dark or vice versa.
 ```python
 import matplotlib.pyplot as plt
 import cosmoplots
