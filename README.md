@@ -52,23 +52,6 @@ ax.plot(a)
 plt.show()
 ```
 
-## `generate_hex_colors`
-
-```python
-import matplotlib.pyplot as plt
-import cosmoplots
-
-color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
-plt.savefig("/assets/color_test.png")
-
-# Print color_list to retrieve the hex numbers
-print(color_list)
-```
-| `colors` |
-| :--------: | 
-| ![colors](./assets/color_test.png) |
-
-
 ## `matplotlib` vs. `cosmoplots` defaults
 
 ```python
@@ -107,3 +90,23 @@ plt.show()
 
 <!-- Links -->
 [poetry]: https://python-poetry.org
+
+
+## `generate_hex_colors`
+
+This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the the number of points of interest.
+The plot is there for reference to show what the swatches would look like if the function is used in  a Jupyter Notebook.
+
+```python
+import matplotlib.pyplot as plt
+import cosmoplots
+
+color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
+plt.savefig("/assets/color_test.png")
+
+# Print color_list to retrieve the hex numbers
+print(color_list)
+```
+| `colors` |
+| :--------: | 
+| ![colors](./assets/color_test.png) |
