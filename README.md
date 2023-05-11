@@ -52,6 +52,18 @@ ax.plot(a)
 plt.show()
 ```
 
+## `generate_hex_colors`
+
+```python
+import matplotlib.pyplot as plt
+import cosmoplots
+
+color_list = cosmoplots.generate_hex_colors(5, 'viridis',show_swatch=True, ascending=True)
+plt.savefig("/assets/color_test.png")
+
+print(color_list)
+```
+
 ## `matplotlib` vs. `cosmoplots` defaults
 
 ```python
