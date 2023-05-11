@@ -90,3 +90,33 @@ plt.show()
 
 <!-- Links -->
 [poetry]: https://python-poetry.org
+
+
+## `generate_hex_colors`
+
+This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the number of points of interest.
+The colors change gradually from bright to dark or vice versa.
+```python
+import matplotlib.pyplot as plt
+import cosmoplots
+
+axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
+
+
+color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
+plt.savefig("./assets/hex_colors.png")
+
+# Print color_list to retrieve the hex numbers
+print(color_list) #['#fde725', '#5ec962', '#21918c', '#3b528b', '#440154']
+
+fig = plt.figure()
+ax = fig.add_axes(axes_size)
+for i, color in enumerate(color_list):
+    ax.plot([1,2],[i,i+1], c = color)
+
+plt.savefig("./assets/hex_colors_example.png")
+plt.show()
+```
+| `hex_colors.png` | hex_colors_example.png |
+| :--------: | :--------: | 
+| ![colors](./assets/hex_colors.png) | ![colors](./assets/hex_colors_example.png) |
