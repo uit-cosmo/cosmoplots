@@ -8,7 +8,7 @@ from typing import List
 
 def make_color_swatch(color_list: list):
     """
-    Generate plot of the desired color swatch
+    Generate plot of the desired color swatches. This is useful if you want to see what the swatches look like.
 
     Args:
         color_list: list
@@ -44,6 +44,7 @@ def generate_hex_colors(
 ) -> List[str]:
     """
     Function to generate colors picked out of the matplolib color maps as hex numbers.
+    If using this function in Jupyter Notebook, by default since show_swatch = True, a plot of the swatches will automatically appear.
 
     Args:
         number_data_points: int
@@ -59,7 +60,7 @@ def generate_hex_colors(
 
     Returns:
         color_list: List[str]
-            List of hex numbers from the desired color map
+            List of hex numbers from the desired color map. Simply do print(color_list) to get this list.
 
     """
 
