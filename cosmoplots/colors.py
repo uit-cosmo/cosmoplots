@@ -1,5 +1,4 @@
 import numpy as np
-from colour import Color
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
 from matplotlib import cm, colors
@@ -23,7 +22,7 @@ def make_color_swatch(color_list: list) -> LinearSegmentedColormap:
     """
 
     color_swatch = LinearSegmentedColormap.from_list(
-        "my_list", [Color(x).rgb for x in color_list]
+        "my_list", [colors.to_rgb(x) for x in color_list]
     )
 
     plt.figure(figsize=(5, 3))
