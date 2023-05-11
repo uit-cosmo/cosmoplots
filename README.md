@@ -58,11 +58,15 @@ plt.show()
 import matplotlib.pyplot as plt
 import cosmoplots
 
-color_list = cosmoplots.generate_hex_colors(5, 'viridis',show_swatch=True, ascending=True)
+color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
 plt.savefig("/assets/color_test.png")
 
 print(color_list)
 ```
+| `colors` |
+| :--------: | 
+| ![generate_hex_colors](./assets/color_test.png) |
+
 
 ## `matplotlib` vs. `cosmoplots` defaults
 
