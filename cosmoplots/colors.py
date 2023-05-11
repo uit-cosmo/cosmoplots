@@ -11,11 +11,13 @@ def make_color_swatch(color_list: list):
     Generate plot of the desired color swatches. This is useful if you want to see what the swatches look like.
     This function is used in generate_hex_colors() where the plot of the swatches will show by default if used in Jupyter Notebook.
 
-    Args:
+    Parameters
+    ----------
         color_list: list
             List of colors from color map
 
-    Return:
+    Returns
+    -------
         color_swatch:
             A plot of the color swatches
     """
@@ -47,7 +49,8 @@ def generate_hex_colors(
     Function to generate colors picked out of the matplolib color maps as hex numbers.
     If using this function in Jupyter Notebook, by default since show_swatch = True, a plot of the swatches will automatically appear.
 
-    Args:
+    Parameters
+    ----------
         number_data_points: int
             The number of data points
         color_map: str
@@ -59,7 +62,8 @@ def generate_hex_colors(
         ascending: bool = True
             Show the color swatches and list in ascending order, from light to dark. Set to True by default.
 
-    Returns:
+    Returns
+    -------
         color_list: List[str]
             List of hex numbers from the desired color map. Simply do print(color_list) to get this list.
 
