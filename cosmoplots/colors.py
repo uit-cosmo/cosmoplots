@@ -13,13 +13,13 @@ def make_color_swatch(color_list: list):
 
     Parameters
     ----------
-        color_list: list
-            List of colors from color map
+    color_list: list
+        List of colors from color map
 
     Returns
     -------
-        color_swatch:
-            A plot of the color swatches
+    color_swatch:
+        A plot of the color swatches
     """
 
     color_swatch = LinearSegmentedColormap.from_list(
@@ -51,21 +51,21 @@ def generate_hex_colors(
 
     Parameters
     ----------
-        number_data_points: int
-            The number of data points
-        color_map: str
-            The name of the colour map from matplotlib. Grayscale friendly colors are:
-            'viridis', 'plasma', 'inferno', 'magma', 'cubehelix', 'cividis'
-            See more here: https://matplotlib.org/stable/tutorials/colors/colormaps.html
-        show_swatch: bool = True
-            Show the color swatches based on the number of data points. 'True' means that a plot will show containing the swatches.
-        ascending: bool = True
-            Show the color swatches and list in ascending order, from light to dark. Set to True by default.
+    number_data_points: int
+        The number of data points
+    color_map: str
+        The name of the colour map from matplotlib. Grayscale friendly colors are:
+        'viridis', 'plasma', 'inferno', 'magma', 'cubehelix', 'cividis'
+        See more here: https://matplotlib.org/stable/tutorials/colors/colormaps.html
+    show_swatch: bool = True
+        Show the color swatches based on the number of data points. 'True' means that a plot will show containing the swatches.
+    ascending: bool = True
+        Show the color swatches and list in ascending order, from light to dark. Set to True by default.
 
     Returns
     -------
-        color_list: List[str]
-            List of hex numbers from the desired color map. Simply do print(color_list) to get this list.
+    color_list: List[str]
+        List of hex numbers from the desired color map. Simply do print(color_list) to get this list.
 
     """
 
