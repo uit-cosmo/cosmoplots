@@ -114,10 +114,6 @@ for i, color in enumerate(color_list):
 
 plt.savefig("./assets/hex_colors_example.png")
 ```
-| `hex_colors.png` |
-| :--------: | 
-| ![colors](./assets/hex_colors.png) |
-
-| `hex_colors_example.png` |
-| :--------: | 
-| ![colors](./assets/hex_colors_example.png) |
+| `hex_colors.png` | 'hex_colors_example.png'|
+| :--------: | :--------: | 
+| ![colors](./assets/hex_colors.png) | ![colors](./assets/hex_colors_example.png) |
