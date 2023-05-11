@@ -9,6 +9,7 @@ from typing import List
 def make_color_swatch(color_list: list):
     """
     Generate plot of the desired color swatches. This is useful if you want to see what the swatches look like.
+    This function is used in generate_hex_colors() where the plot of the swatches will show by default if used in Jupyter Notebook.
 
     Args:
         color_list: list
