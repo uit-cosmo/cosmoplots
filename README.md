@@ -102,7 +102,7 @@ import matplotlib.pyplot as plt
 import cosmoplots
 
 color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
-plt.savefig("/assets/color_test.png")
+plt.savefig("./assets/color_test.png")
 
 # Print color_list to retrieve the hex numbers
 print(color_list)
