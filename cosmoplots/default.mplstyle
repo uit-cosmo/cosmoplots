@@ -1,0 +1,45 @@
+# https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file
+
+# Figure size and dpi
+figure.dpi : 300
+figure.figsize : 3.37, 2.08277
+# Same result as returning the rectangle and use it in plt.figure().add_axes([...])
+figure.subplot.left : 0.2
+figure.subplot.right : 0.95
+figure.subplot.bottom : 0.2
+figure.subplot.top : 0.95
+
+# Figure legend
+legend.framealpha : 1.0
+legend.fancybox : False
+legend.edgecolor : "k"
+patch.linewidth : 0.5  # For legend box borders
+legend.handlelength : 1.45  # Show nice, even numbers for different line styles
+
+# Font and text
+text.usetex : True
+pdf.fonttype : 42
+font.family : "Times"
+font.size : 8
+axes.labelsize : 8
+legend.fontsize : 8
+
+# Line size and marker size
+lines.markersize : 2.25
+lines.linewidth : 0.75
+
+# Axes thickness
+axes.linewidth : 0.5
+# Enable minor ticks
+ytick.minor.visible : True
+xtick.minor.visible : True
+# Default ticks on both sides of the axes
+xtick.top : True
+xtick.bottom : True
+ytick.left : True
+ytick.right : True
+# All ticks point inward
+xtick.direction : "in"
+ytick.direction : "in"
+# Tick formatting in log scale
+axes.formatter.min_exponent : 2

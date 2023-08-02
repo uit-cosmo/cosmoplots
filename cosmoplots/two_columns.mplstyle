@@ -1,0 +1,8 @@
+# The two-column version.
+
+figure.figsize : 6.74, 2.08277
+# Same result as returning the rectangle and use it in plt.figure().add_axes([...])
+figure.subplot.left : 0.1
+figure.subplot.right : 0.975
+figure.subplot.bottom : 0.2
+figure.subplot.top : 0.95
