@@ -129,6 +129,8 @@ def set_rcparams_dynamo(
     # All ticks point inward
     myParams["xtick.direction"] = "in"
     myParams["ytick.direction"] = "in"
+    # Make log axes use exponents only for values of 2 and higher
+    myParams["axes.formatter.min_exponent"] = 2
 
     return axes_size
 
