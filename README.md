@@ -23,10 +23,15 @@ poetry install
 
 Set your `rcparams` before plotting in your code, for example:
 
-```Python
+```python
 import cosmoplots
+import matplotlib as mpl
 
-axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
+# If you only want the default style
+mpl.style.use("cosmoplots.default")
+# If you want the two column style, combine it with the default. Setting it after is
+# important, since values from the default is overridden.
+mpl.style.use(["cosmoplots.default", "cosmoplots.two_columns"])
 ```
 
 ## `change_log_axis_base`
@@ -35,11 +40,12 @@ axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
 import matplotlib.pyplot as plt
 import numpy as np
 import cosmoplots
+import matplotlib as mpl
 
-axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
+mpl.style.use("cosmoplots.default")
 a = np.exp(np.linspace(-3, 5, 100))
 fig = plt.figure()
-ax = fig.add_axes(axes_size)
+ax = plt.gca()
 ax.set_xlabel("X Axis")
 ax.set_ylabel("Y Axis")
 base = 2  # Default is 10, but 2 works equally well
@@ -55,33 +61,30 @@ plt.show()
 ## `matplotlib` vs. `cosmoplots` defaults
 
 ```python
+import cosmoplots
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import cosmoplots
 
-# Matplotlib --------------------------------------------------------------------------- #
-a = np.exp(np.linspace(-3, 5, 100))
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.set_xlabel("X Axis")
-ax.set_ylabel("Y Axis")
-ax.semilogy(a)
-# plt.savefig("assets/matplotlib.png")
-plt.show()
+def plot() -> None:
+    a = np.exp(np.linspace(-3, 5, 100))
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.semilogy(a)
 
-# Cosmoplots --------------------------------------------------------------------------- #
-axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
-a = np.exp(np.linspace(-3, 5, 100))
-fig = plt.figure()
-ax = fig.add_axes(axes_size)
-ax.set_xlabel("X Axis")
-ax.set_ylabel("Y Axis")
-cosmoplots.change_log_axis_base(ax, "y")
-ax.semilogy(a)
-# Commenting out the below line result in the default base10 ticks
-cosmoplots.change_log_axis_base(ax, "y")
-# plt.savefig("assets/cosmoplots.png")
-plt.show()
+# Matplotlib ------------------------------------------------------------------------- #
+with mpl.style.context("default"):
+    plot()
+    # plt.savefig("assets/matplotlib.png")
+    plt.show()
+
+# Cosmoplots ------------------------------------------------------------------------- #
+with mpl.style.context("cosmoplots.default"):
+    plot()
+    # plt.savefig("assets/cosmoplots.png")
+    plt.show()
 ```
 
 | `matplotlib` | `cosmoplots` |
