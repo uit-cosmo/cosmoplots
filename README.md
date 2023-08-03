@@ -61,31 +61,28 @@ plt.show()
 ## `matplotlib` vs. `cosmoplots` defaults
 
 ```python
+import cosmoplots
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import cosmoplots
+
+def plot() -> None:
+    a = np.exp(np.linspace(-3, 5, 100))
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.semilogy(a)
 
 # Matplotlib ------------------------------------------------------------------------- #
-a = np.exp(np.linspace(-3, 5, 100))
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.set_xlabel("X Axis")
-ax.set_ylabel("Y Axis")
-ax.semilogy(a)
-# plt.savefig("assets/matplotlib.png")
-plt.show()
+with mpl.style.context("default"):
+    plot()
+    # plt.savefig("assets/matplotlib.png")
+    plt.show()
 
 # Cosmoplots ------------------------------------------------------------------------- #
 with mpl.style.context("cosmoplots.default"):
-    a = np.exp(np.linspace(-3, 5, 100))
-    fig = plt.figure()
-    ax = fig.add_axes(axes_size)
-    ax.set_xlabel("X Axis")
-    ax.set_ylabel("Y Axis")
-    cosmoplots.change_log_axis_base(ax, "y")
-    ax.semilogy(a)
-    # Commenting out the below line result in the default base10 ticks
-    cosmoplots.change_log_axis_base(ax, "y")
+    plot()
     # plt.savefig("assets/cosmoplots.png")
     plt.show()
 ```
