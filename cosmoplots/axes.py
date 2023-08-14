@@ -1,5 +1,7 @@
 """Module for modifying the axis properties of plots."""
 
+import warnings
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
@@ -34,6 +36,11 @@ def change_log_axis_base(axes: plt.Axes, which: str, base: float = 10) -> plt.Ax
     ValueError
         If the axes given in `which` is not `x`, `y` or `both`.
     """
+    warnings.warn(
+        "The 'change_log_axis_base' function is deprecated and will be removed in the"
+        " next major version release of cosmoplots, v1.0.0. Instead, use the `mplstyle`"
+        " files to set the figure dimensions: \nplt.style.use('cosmoplots.default')"
+    )
     if which == "both":
         axs, pltype = ["xaxis", "yaxis"], "loglog"
     elif which == "x":
@@ -49,13 +56,15 @@ def change_log_axis_base(axes: plt.Axes, which: str, base: float = 10) -> plt.Ax
         f = getattr(axes, ax)
         f.set_major_formatter(
             ticker.FuncFormatter(
-                lambda x, _: r"${:g}$".format(x)
-                if np.log(x) / np.log(base) in [0, 1]
-                else r"$"
-                + str(base)
-                + "^{"
-                + "{:g}".format(np.log(x) / np.log(base))
-                + r"}$"
+                lambda x, _: (
+                    r"${:g}$".format(x)
+                    if np.log(x) / np.log(base) in [0, 1]
+                    else r"$"
+                    + str(base)
+                    + "^{"
+                    + "{:g}".format(np.log(x) / np.log(base))
+                    + r"}$"
+                )
             )
         )
     return axes
