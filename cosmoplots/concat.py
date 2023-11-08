@@ -1,32 +1,28 @@
 """Combine cosmoplots images in a subfigure layout."""
 
-from typing import Self
-import subprocess
+# `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
+from __future__ import annotations
+
 import pathlib
+import subprocess
 
 
 class Combine:
-    def __init__(
-        self,
-        gravity: str = "northwest",
-        pos: tuple[float, float] = (0.0, 0.0),
-        font: str = "Times-New-Roman",
-        fontsize: int = 100,
-        color: str = "black",
-        output: str = "output",
-    ) -> None:
-        self._gravity = gravity
-        self._fontsize = fontsize
-        self._pos = pos
-        self._font = font
-        self._color = color
-        self._output = output if output.endswith("png") else f"{output}.png"
+    """Combine images made with the cosmoplots mplstyle into a subfigure layout."""
+
+    def __init__(self) -> None:
+        self._gravity = "northwest"
+        self._fontsize = 100
+        self._pos = (10.0, 10.0)
+        self._font = "Times-New-Roman"
+        self._color = "black"
+        self._output = "output.png"
         self._files: list[pathlib.Path] = []
         self._labels: list[str] = []
         self._w: int | None = None
         self._h: int | None = None
 
-    def combine(self, *files: str) -> Self:
+    def combine(self, *files: str) -> Combine:
         """Give all files that should be combined.
 
         Parameters
@@ -45,24 +41,29 @@ class Combine:
     def using(
         self,
         gravity: str = "northwest",
-        pos: tuple[float, float] = (0.0, 0.0),
+        pos: tuple[float, float] = (10.0, 10.0),
         font: str = "Times-New-Roman",
         fontsize: int = 100,
         color: str = "black",
-    ) -> Self:
+    ) -> Combine:
         """Set text properties.
 
         Parameters
         ----------
+        gravity : str
+            Where the position of the text is relative to in the subfigure. Default is
+            `northwest`. Possible values are `north`, `northeast`, `northwest`, `south`,
+            `southeast`, `southwest`, `west`, `east` and `center`.
         pos : tuple[float, float]
-            The position relative to the top-left corner of the subfigure.
+            The position in the subfigure relative to `gravity`. Default is `(10.0,
+            10.0)`.
         font : str
             The type of font to use, default is Times New Roman. See `convert -list
             font` for a list of available fonts.
         fontsize : int
-            The size of the font in pointsize.
+            The size of the font in pointsize. Default is `100`.
         color : str
-            The color of the text.
+            The color of the text. Default is `black`.
         """
         self._gravity = gravity
         self._fontsize = fontsize
@@ -71,7 +72,7 @@ class Combine:
         self._color = color
         return self
 
-    def in_grid(self, w: int, h: int) -> Self:
+    def in_grid(self, w: int, h: int) -> Combine:
         """Specify the grid layout.
 
         Parameters
@@ -89,8 +90,12 @@ class Combine:
         self._h = h
         return self
 
-    def with_labels(self, *labels: str) -> Self:
-        """Give the labels that should be printed on the subfigures."""
+    def with_labels(self, *labels: str) -> Combine:
+        """Give the labels that should be printed on the subfigures.
+
+        Providing labels is optional, and if not given, the labels will be generated
+        alphabetically as (a), (b), (c), ..., (aa), (ab), (ac), ...
+        """
         if not labels:
             self._labels = self._create_labels()
         elif len(labels) != len(self._files):
@@ -104,6 +109,8 @@ class Combine:
         characters: list[str] = []
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         count = 0
+        # If labels have not been provided, create labels that follow an alphabetical
+        # order.
         while len(characters) < len(self._files):
             # Calculate the current character based on the count
             current_char = ""
@@ -113,7 +120,7 @@ class Combine:
             if quotient > 0:
                 current_char = alphabet[quotient - 1] + current_char
 
-            characters.append(current_char)
+            characters.append(f"({current_char})")
             count += 1
         return characters
 
@@ -217,12 +224,3 @@ def combine(*files: str) -> Combine:
     be chained together.
     """
     return Combine().combine(*files)
-
-
-if __name__ == "__main__":
-    combine(
-        "file1.png", "file2.png", "file3.png", "file4.png", "file5.png", "file6.png"
-    ).using(fontsize=120).in_grid(w=2, h=3).with_labels(
-        "a", "b", "c", "d", "e", "f"
-    ).save()
-    combine().help()
