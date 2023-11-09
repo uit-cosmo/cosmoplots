@@ -16,18 +16,18 @@ class Combine:
         self._pos = (10.0, 10.0)
         self._font = "Times-New-Roman"
         self._color = "black"
-        self._output = "output.png"
+        self._output = pathlib.Path("output.png")
         self._files: list[pathlib.Path] = []
         self._labels: list[str] = []
         self._w: int | None = None
         self._h: int | None = None
 
-    def combine(self, *files: str) -> Combine:
+    def combine(self, *files: str | pathlib.Path) -> Combine:
         """Give all files that should be combined.
 
         Parameters
         ----------
-        files : str
+        files : str | pathlib.Path
             A file path that can be read by pathlib.Path.
         """
         for f in files:
@@ -35,7 +35,7 @@ class Combine:
             if current_file.exists():
                 self._files.append(current_file)
             else:
-                raise ValueError("File not found.")
+                raise FileNotFoundError(f"The input file {current_file} was not found.")
         return self
 
     def using(
@@ -124,23 +124,48 @@ class Combine:
             count += 1
         return characters
 
-    def save(self, output: str | None = None) -> None:
+    def save(self, output: pathlib.Path | str | None = None) -> None:
         """Save the combined images as a png file.
 
         Parameters
         ----------
-        output : str, optional
+        output : pathlib.Path | str, optional
             Give the name of the output file, default is `output.png`.
         """
+        self._check_params_before_save(output)
+        self._check_cli_available()
+        self._run_subprocess()
+
+    def _check_params_before_save(
+        self, output: pathlib.Path | str | None = None
+    ) -> None:
         # Check if there are files
         if output is not None:
-            self._output = output if output.endswith("png") else f"{output}.png"
-        if self._w is None or self._h is None:
-            raise ValueError("You need to specify the files and grid first.")
+            output = pathlib.Path(output)
+            self._output = (
+                output if output.name.endswith("png") else output.with_suffix(".png")
+            )
+        if not self._output.parents[0].exists():
+            raise FileNotFoundError(
+                f"The file path {self._output.parents[0]} does not exist."
+            )
         if not self._labels:
             self._labels = self._create_labels()
+
+    @staticmethod
+    def _check_cli_available() -> None:
+        try:
+            subprocess.check_output("convert --help", shell=True)
+        except subprocess.CalledProcessError as e:
+            raise ChildProcessError(
+                "Calling `convert --help` did not work. Are you sure you have imagemagick installed?"
+            ) from e
+
+    def _run_subprocess(self) -> None:
+        if self._w is None or self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
         idx = list(range(len(self._files)))
-        for i, file, label in zip(idx, self._files, self._labels, strict=True):
+        for i, file, label in zip(idx, self._files, self._labels):
             # Add label to images
             subprocess.call(
                 [
@@ -151,7 +176,10 @@ class Combine:
                     "-pointsize",
                     str(self._fontsize),
                     "-draw",
-                    f"gravity {self._gravity} fill {self._color} text {self._pos[0]},{self._pos[1]} '{label}'",
+                    (
+                        f"gravity {self._gravity} fill {self._color} text"
+                        f" {self._pos[0]},{self._pos[1]} '{label}'"
+                    ),
                     f"{str(i)}.png",
                 ]
             )
@@ -169,7 +197,7 @@ class Combine:
         subprocess.call(
             ["convert", "-append"]
             + [f"subfigure_{j}.png" for j in range(self._h)]
-            + [str(self._output)]
+            + [self._output.resolve()]
         )
 
         # Delete temporary files
@@ -181,12 +209,20 @@ class Combine:
 
     def help(self) -> None:
         """Print commands that are used."""
+
+        def _conv_cmd(lab) -> str:
+            return (
+                f"    convert in-{lab}.png -font {self._font} -pointsize"
+                f' {self._fontsize} -draw "gravity {self._gravity} fill {self._color}'
+                f" text {self._pos[0]},{self._pos[1]} '({lab})'\" {lab}.png\n"
+            )
+
         print(
             "To create images with labels:\n"
-            "    convert in-1.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 0,0 '(a)'\" a.png\n"
-            "    convert in-2.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 0,0 '(b)'\" b.png\n"
-            "    convert in-3.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 0,0 '(c)'\" c.png\n"
-            "    convert in-4.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 0,0 '(d)'\" d.png\n"
+            f"{_conv_cmd('a')}"
+            f"{_conv_cmd('b')}"
+            f"{_conv_cmd('c')}"
+            f"{_conv_cmd('d')}"
             "Then to combine them horizontally:\n"
             "    convert +append a.png b.png ab.png\n"
             "    convert +append c.png d.png cd.png\n"
@@ -197,12 +233,12 @@ class Combine:
         )
 
 
-def combine(*files: str) -> Combine:
+def combine(*files: str | pathlib.Path) -> Combine:
     """Give all files that should be combined.
 
     Parameters
     ----------
-    files : str
+    files : str | pathlib.Path
         A file path that can be read by pathlib.Path.
 
     Returns
