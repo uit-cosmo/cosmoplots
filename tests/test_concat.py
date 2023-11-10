@@ -1,6 +1,7 @@
 """Test the `concat` module."""
 
 import pathlib
+from sys import platform
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -45,41 +46,57 @@ def test_help(capfd) -> None:
 
 def test_combine(tmp_path: pathlib.Path) -> None:
     """Test that the `combine` function works."""
-    plot()
-    plt.savefig(tmp_path / "test1.png")
-    plot()
-    plt.savefig(tmp_path / "test2.png")
-    plot()
-    plt.savefig(tmp_path / "test3.png")
-    plot()
-    plt.savefig(tmp_path / "test4.png")
-    cosmoplots.combine(
-        tmp_path / "test1.png",
-        tmp_path / "test2.png",
-        tmp_path / "test3.png",
-        tmp_path / "test4.png",
-    ).in_grid(w=2, h=2).save(tmp_path / "out.png")
-    first_img = tmp_path / "out.png"
-    assert first_img.exists()
 
-
-def test_in_grid_not_specified(tmp_path: pathlib.Path) -> None:
-    """Test error when `in_grid` has not been called."""
-    plot()
-    plt.savefig(tmp_path / "test1.png")
-    plot()
-    plt.savefig(tmp_path / "test2.png")
-    plot()
-    plt.savefig(tmp_path / "test3.png")
-    plot()
-    plt.savefig(tmp_path / "test4.png")
-    with pytest.raises(ValueError):
+    def _combine() -> None:
+        plot()
+        plt.savefig(tmp_path / "test1.png")
+        plot()
+        plt.savefig(tmp_path / "test2.png")
+        plot()
+        plt.savefig(tmp_path / "test3.png")
+        plot()
+        plt.savefig(tmp_path / "test4.png")
         cosmoplots.combine(
             tmp_path / "test1.png",
             tmp_path / "test2.png",
             tmp_path / "test3.png",
             tmp_path / "test4.png",
-        ).save(tmp_path / "out.png")
+        ).in_grid(w=2, h=2).save(tmp_path / "out.png")
+
+    if platform == "win32":
+        with pytest.raises(ChildProcessError):
+            _combine()
+    else:
+        _combine()
+        first_img = tmp_path / "out.png"
+        assert first_img.exists()
+
+
+def test_in_grid_not_specified(tmp_path: pathlib.Path) -> None:
+    """Test error when `in_grid` has not been called."""
+
+    def _grid() -> None:
+        plot()
+        plt.savefig(tmp_path / "test1.png")
+        plot()
+        plt.savefig(tmp_path / "test2.png")
+        plot()
+        plt.savefig(tmp_path / "test3.png")
+        plot()
+        plt.savefig(tmp_path / "test4.png")
+        with pytest.raises(ValueError):
+            cosmoplots.combine(
+                tmp_path / "test1.png",
+                tmp_path / "test2.png",
+                tmp_path / "test3.png",
+                tmp_path / "test4.png",
+            ).save(tmp_path / "out.png")
+
+    if platform == "win32":
+        with pytest.raises(ChildProcessError):
+            _grid()
+    else:
+        _grid()
 
 
 def test_output_not_found(tmp_path: pathlib.Path) -> None:
