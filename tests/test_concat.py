@@ -1,6 +1,7 @@
 """Test the `concat` module."""
 
 import pathlib
+import subprocess
 from sys import platform
 
 import matplotlib as mpl
@@ -21,6 +22,13 @@ def plot() -> None:
     ax.set_xlabel("X Axis")
     ax.set_ylabel("Y Axis")
     ax.semilogy(a)
+
+
+def test_convert_help() -> None:
+    """Test that ImageMagick's convert command is available."""
+    result = subprocess.check_output(["convert", "--help"])
+    out = "b'Version: ImageMagick'"
+    assert str(result[:20]) == out
 
 
 def test_help(capfd) -> None:
@@ -145,21 +153,21 @@ def test_wrong_number_of_labels(tmp_path: pathlib.Path) -> None:
 
 # fmt: off
 _LABELS = {
-    1: "(a)", 2: "(b)", 3: "(c)", 4: "(d)", 5: "(e)", 6: "(f)", 7: "(g)", 8: "(h)",
-    9: "(i)", 10: "(j)", 11: "(k)", 12: "(l)", 13: "(m)", 14: "(n)", 15: "(o)",
-    16: "(p)", 17: "(q)", 18: "(r)", 19: "(s)", 20: "(t)", 21: "(u)", 22: "(v)",
-    23: "(w)", 24: "(x)", 25: "(y)", 26: "(z)", 27: "(aa)", 28: "(ab)", 29: "(ac)",
-    30: "(ad)", 31: "(ae)", 32: "(af)", 33: "(ag)", 34: "(ah)", 35: "(ai)", 36: "(aj)",
-    37: "(ak)", 38: "(al)", 39: "(am)", 40: "(an)", 41: "(ao)", 42: "(ap)", 43: "(aq)",
-    44: "(ar)", 45: "(as)", 46: "(at)", 47: "(au)", 48: "(av)", 49: "(aw)", 50: "(ax)",
-    51: "(ay)", 52: "(az)", 53: "(ba)", 54: "(bb)", 55: "(bc)", 56: "(bd)", 57: "(be)",
-    58: "(bf)", 59: "(bg)", 60: "(bh)", 61: "(bi)", 62: "(bj)", 63: "(bk)", 64: "(bl)",
-    65: "(bm)", 66: "(bn)", 67: "(bo)", 68: "(bp)", 69: "(bq)", 70: "(br)", 71: "(bs)",
-    72: "(bt)", 73: "(bu)", 74: "(bv)", 75: "(bw)", 76: "(bx)", 77: "(by)", 78: "(bz)",
-    79: "(ca)", 80: "(cb)", 81: "(cc)", 82: "(cd)", 83: "(ce)", 84: "(cf)", 85: "(cg)",
-    86: "(ch)", 87: "(ci)", 88: "(cj)", 89: "(ck)", 90: "(cl)", 91: "(cm)", 92: "(cn)",
-    93: "(co)", 94: "(cp)", 95: "(cq)", 96: "(cr)", 97: "(cs)", 98: "(ct)", 99: "(cu)",
-    100: "(cv)",
+    0: "(a)", 1: "(b)", 2: "(c)", 3: "(d)", 4: "(e)", 5: "(f)", 6: "(g)", 7: "(h)",
+    8: "(i)", 9: "(j)", 10: "(k)", 11: "(l)", 12: "(m)", 13: "(n)", 14: "(o)",
+    15: "(p)", 16: "(q)", 17: "(r)", 18: "(s)", 19: "(t)", 20: "(u)", 21: "(v)",
+    22: "(w)", 23: "(x)", 24: "(y)", 25: "(z)", 26: "(aa)", 27: "(ab)", 28: "(ac)",
+    29: "(ad)", 30: "(ae)", 31: "(af)", 32: "(ag)", 33: "(ah)", 34: "(ai)", 35: "(aj)",
+    36: "(ak)", 37: "(al)", 38: "(am)", 39: "(an)", 40: "(ao)", 41: "(ap)", 42: "(aq)",
+    43: "(ar)", 44: "(as)", 45: "(at)", 46: "(au)", 47: "(av)", 48: "(aw)", 49: "(ax)",
+    50: "(ay)", 51: "(az)", 52: "(ba)", 53: "(bb)", 54: "(bc)", 55: "(bd)", 56: "(be)",
+    57: "(bf)", 58: "(bg)", 59: "(bh)", 60: "(bi)", 61: "(bj)", 62: "(bk)", 63: "(bl)",
+    64: "(bm)", 65: "(bn)", 66: "(bo)", 67: "(bp)", 68: "(bq)", 69: "(br)", 70: "(bs)",
+    71: "(bt)", 72: "(bu)", 73: "(bv)", 74: "(bw)", 75: "(bx)", 76: "(by)", 77: "(bz)",
+    78: "(ca)", 79: "(cb)", 80: "(cc)", 81: "(cd)", 82: "(ce)", 83: "(cf)", 84: "(cg)",
+    85: "(ch)", 86: "(ci)", 87: "(cj)", 88: "(ck)", 89: "(cl)", 90: "(cm)", 91: "(cn)",
+    92: "(co)", 93: "(cp)", 94: "(cq)", 95: "(cr)", 96: "(cs)", 97: "(ct)", 98: "(cu)",
+    99: "(cv)",
 }
 # fmt: on
 
@@ -170,4 +178,4 @@ def test_generate_labels() -> None:
     combiner._files = [pathlib.Path(f"file-{i}.png") for i in range(100)]
     labels = combiner._create_labels()
     for i, label in enumerate(labels):
-        assert label == _LABELS[i + 1]
+        assert label == _LABELS[i]
