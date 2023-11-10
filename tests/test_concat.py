@@ -124,3 +124,33 @@ def test_wrong_number_of_labels(tmp_path: pathlib.Path) -> None:
             tmp_path / "test3.png",
             tmp_path / "test4.png",
         ).in_grid(w=2, h=2).with_labels("only one").save(tmp_path / "out.png")
+
+
+# fmt: off
+_LABELS = {
+    1: "(a)", 2: "(b)", 3: "(c)", 4: "(d)", 5: "(e)", 6: "(f)", 7: "(g)", 8: "(h)",
+    9: "(i)", 10: "(j)", 11: "(k)", 12: "(l)", 13: "(m)", 14: "(n)", 15: "(o)",
+    16: "(p)", 17: "(q)", 18: "(r)", 19: "(s)", 20: "(t)", 21: "(u)", 22: "(v)",
+    23: "(w)", 24: "(x)", 25: "(y)", 26: "(z)", 27: "(aa)", 28: "(ab)", 29: "(ac)",
+    30: "(ad)", 31: "(ae)", 32: "(af)", 33: "(ag)", 34: "(ah)", 35: "(ai)", 36: "(aj)",
+    37: "(ak)", 38: "(al)", 39: "(am)", 40: "(an)", 41: "(ao)", 42: "(ap)", 43: "(aq)",
+    44: "(ar)", 45: "(as)", 46: "(at)", 47: "(au)", 48: "(av)", 49: "(aw)", 50: "(ax)",
+    51: "(ay)", 52: "(az)", 53: "(ba)", 54: "(bb)", 55: "(bc)", 56: "(bd)", 57: "(be)",
+    58: "(bf)", 59: "(bg)", 60: "(bh)", 61: "(bi)", 62: "(bj)", 63: "(bk)", 64: "(bl)",
+    65: "(bm)", 66: "(bn)", 67: "(bo)", 68: "(bp)", 69: "(bq)", 70: "(br)", 71: "(bs)",
+    72: "(bt)", 73: "(bu)", 74: "(bv)", 75: "(bw)", 76: "(bx)", 77: "(by)", 78: "(bz)",
+    79: "(ca)", 80: "(cb)", 81: "(cc)", 82: "(cd)", 83: "(ce)", 84: "(cf)", 85: "(cg)",
+    86: "(ch)", 87: "(ci)", 88: "(cj)", 89: "(ck)", 90: "(cl)", 91: "(cm)", 92: "(cn)",
+    93: "(co)", 94: "(cp)", 95: "(cq)", 96: "(cr)", 97: "(cs)", 98: "(ct)", 99: "(cu)",
+    100: "(cv)",
+}
+# fmt: on
+
+
+def test_generate_labels() -> None:
+    """Test that the auto-generated labels are correct up the 100th label."""
+    combiner = cosmoplots.Combine()
+    combiner._files = [pathlib.Path(f"file-{i}.png") for i in range(100)]
+    labels = combiner._create_labels()
+    for i, label in enumerate(labels):
+        assert label == _LABELS[i + 1]

@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: ${{ matrix.python-version }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Upgrade pip
+        run: |
+          pip install --upgrade pip
+          pip --version
+
+      - name: Install Poetry
+        run: |
+          pipx install poetry
+          poetry --version
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Test with pytest
+        run: |
+          pytest
