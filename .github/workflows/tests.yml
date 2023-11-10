@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    timeout-minutes: 460
     name: ${{ matrix.python-version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
