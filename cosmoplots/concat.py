@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import pathlib
+import random
 import subprocess
+import tempfile
 
 
 class Combine:
@@ -162,6 +164,10 @@ class Combine:
             ) from e
 
     def _run_subprocess(self) -> None:
+        # In case several python runtimes use this class, we prepend a random string so
+        # that we do not experience conflicts when creating the temporary files.
+        tmp_dir = tempfile.TemporaryDirectory()
+        rnd_str = str(random.random())[2:]
         if self._w is None or self._h is None:
             raise ValueError("You need to specify the files and grid first.")
         idx = list(range(len(self._files)))
@@ -180,7 +186,7 @@ class Combine:
                         f"gravity {self._gravity} fill {self._color} text"
                         f" {self._pos[0]},{self._pos[1]} '{label}'"
                     ),
-                    f"{str(i)}.png",
+                    pathlib.Path(tmp_dir.name) / f"{rnd_str}_{str(i)}.png",
                 ]
             )
         # Create horizontal subfigures
@@ -189,23 +195,25 @@ class Combine:
             idx_sub = idx[j * self._w : (j + 1) * self._w]
             subprocess.call(
                 ["convert", "+append"]
-                + [f"{str(i)}.png" for i in idx_sub]
-                + [f"subfigure_{j}.png"]
+                + [
+                    pathlib.Path(tmp_dir.name) / f"{rnd_str}_{str(i)}.png"
+                    for i in idx_sub
+                ]
+                + [pathlib.Path(tmp_dir.name) / f"{rnd_str}_subfigure_{j}.png"]
             )
 
         # Create vertical subfigures from horizontal subfigures
         subprocess.call(
             ["convert", "-append"]
-            + [f"subfigure_{j}.png" for j in range(self._h)]
+            + [
+                pathlib.Path(tmp_dir.name) / f"{rnd_str}_subfigure_{j}.png"
+                for j in range(self._h)
+            ]
             + [self._output.resolve()]
         )
 
         # Delete temporary files
-        subprocess.call(
-            ["rm"]
-            + [f"{str(i)}.png" for i in idx]
-            + [f"subfigure_{j}.png" for j in range(self._h)]
-        )
+        tmp_dir.cleanup()
 
     def help(self) -> None:
         """Print commands that are used."""
