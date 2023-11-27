@@ -123,3 +123,61 @@ plt.show()
 | `hex_colors.png` | hex_colors_example.png |
 | :--------: | :--------: | 
 | ![colors](./assets/hex_colors.png) | ![colors](./assets/hex_colors_example.png) |
+
+## `combine`
+
+Sometimes, plots might be related and better placed as subfigures in a larger figure. If
+combining the plots using the `subfigure` environment in latex or similar is not an
+option, this is easily done with [`imagemagick`](https://imagemagick.org/index.php) in a
+systematic way.
+
+The `Combine` class within the `concat` module implements such procedures, and is also
+conveniently available from the `combine` function in `cosmoplots`.
+
+An example is shown below. Also see the [`tests`](./tests/) directory for more examples.
+
+```python
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+import cosmoplots
+
+mpl.style.use("cosmoplots.default")
+
+
+def plot(i) -> None:
+    """Create a simple plot."""
+    a = np.exp(np.linspace(-3, 5, 100))
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.semilogy(a)
+    plt.savefig(f"{i}.png")
+    plt.close(fig)
+
+plot(1)
+plot(2)
+plot(3)
+plot(4)
+plot(5)
+plot(6)
+plot(7)
+plot(8)
+plot(9)
+plot(10)
+# See `convert -list font` for all available fonts.
+cosmoplots.combine(
+    "1.png", "2.png", "3.png", "4.png", "5.png",
+    "6.png", "7.png", "8.png", "9.png", "10.png",
+).using(
+    font="JetBrainsMonoNL-NFM-Medium",
+    fontsize=60,
+    gravity="southeast",
+    pos=(100, 200),
+    color="green",
+).in_grid(w=3, h=4).with_labels(
+    "one", "four", "three", "two", "eight", "six", "seven", "five", "nine", "ten"
+).save("out.png")
+```

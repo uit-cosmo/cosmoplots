@@ -87,6 +87,8 @@ class Combine:
             raise ValueError("You need to provide the files first.")
         if int(w * h) < len(self._files):
             raise ValueError("The grid is too small.")
+        elif int(w * (h - 1)) > len(self._files) or int(h * (w - 1)) > len(self._files):
+            raise ValueError("The grid is too big.")
         self._w = w
         self._h = h
         return self
