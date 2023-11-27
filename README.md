@@ -135,6 +135,8 @@ The `Combine` class within the `concat` module implements such procedures, and i
 conveniently available from the `combine` function in `cosmoplots`.
 
 An example is shown below. Also see the [`tests`](./tests/) directory for more examples.
+A `help` method that prints the `imagemagick` commands that are used under the hood is
+also available.
 
 ```python
 import matplotlib as mpl
@@ -154,7 +156,7 @@ def plot(i) -> None:
     ax.set_xlabel("X Axis")
     ax.set_ylabel("Y Axis")
     ax.semilogy(a)
-    plt.savefig(f"{i}.png")
+    plt.savefig(f"./assets/{i}.png")
     plt.close(fig)
 
 plot(1)
@@ -168,16 +170,21 @@ plot(8)
 plot(9)
 plot(10)
 # See `convert -list font` for all available fonts.
-cosmoplots.combine(
-    "1.png", "2.png", "3.png", "4.png", "5.png",
-    "6.png", "7.png", "8.png", "9.png", "10.png",
-).using(
+figs = [f"./assets/{i}.png" for i in range(1, 11)]
+cosmoplots.combine(*figs).using(
     font="JetBrainsMonoNL-NFM-Medium",
     fontsize=60,
     gravity="southeast",
     pos=(100, 200),
     color="green",
-).in_grid(w=3, h=4).with_labels(
+).in_grid(w=3, h=4).with_labels(  # Specifying labels is optional
     "one", "four", "three", "two", "eight", "six", "seven", "five", "nine", "ten"
-).save("out.png")
+).save("./assets/concat.png")
+
+# Note that cosmoplots.combine() == cosmoplots.Combine().combine()
+cosmoplots.combine().help()
+# Or equivalently
+cosmoplots.Combine().help()
 ```
+
+![concat](./assets/concat.png)
