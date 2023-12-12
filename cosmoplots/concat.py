@@ -22,6 +22,11 @@ class Combine:
         self._labels: list[str] = []
         self._w: int | None = None
         self._h: int | None = None
+        self._squish = False
+        self._squish_r = 50
+        self._squish_l = 203
+        self._squish_t = 31
+        self._squish_b = 124
 
     def combine(self, *files: str | pathlib.Path) -> Combine:
         """Give all files that should be combined.
@@ -108,6 +113,19 @@ class Combine:
 
         return self
 
+    def squish(
+        self,
+        top_bottom: tuple[int, int] | None = None,
+        left_right: tuple[int, int] | None = None,
+    ) -> Combine:
+        """Squish the images together by a given amount."""
+        self._squish = True
+        self._squish_l = self._squish_l if left_right is None else left_right[0]
+        self._squish_r = self._squish_r if left_right is None else left_right[1]
+        self._squish_t = self._squish_t if top_bottom is None else top_bottom[0]
+        self._squish_b = self._squish_b if top_bottom is None else top_bottom[1]
+        return self
+
     def _create_labels(self) -> list[str]:
         characters: list[str] = []
         alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -165,16 +183,8 @@ class Combine:
                 " If not, resort to the ImageMagick website: https://imagemagick.org/script/download.php"
             ) from e
 
-    def _run_subprocess(self) -> None:
-        # In case several python runtimes use this class, we use a temporary directory
-        # to which we save the files generated from the intermediate subprocess calls.
-        # This way we will not experience conflicts when calling the combine class from
-        # two or more parallel python runtimes.
-        tmp_dir = tempfile.TemporaryDirectory()
-        if self._w is None or self._h is None:
-            raise ValueError("You need to specify the files and grid first.")
+    def _subprocess_labeler(self, tmp_path) -> None:
         idx = list(range(len(self._files)))
-        tmp_path = pathlib.Path(tmp_dir.name)
         for i, file, label in zip(idx, self._files, self._labels):
             # Add label to images
             subprocess.call(
@@ -193,22 +203,132 @@ class Combine:
                     tmp_path / f"{str(i)}.png",
                 ]
             )
+
+    def _subprocess_append_horizontal(self, tmp_path) -> None:
         # Create horizontal subfigures
+        idx = list(range(len(self._files)))
+        if self._w is None or self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
         for j in range(self._h):
             # Choose first n items in the list
             idx_sub = idx[j * self._w : (j + 1) * self._w]
             subprocess.call(
                 ["convert", "+append"]
                 + [tmp_path / f"{str(i)}.png" for i in idx_sub]
+                + ["+repage", tmp_path / f"subfigure_{j}.png"]
+            )
+
+    def _subprocess_squash_horizontal(self, tmp_path) -> None:
+        # Create horizontal subfigures
+        idx = list(range(len(self._files)))
+        if self._w is None or self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
+        # convert compare-waveform-max-aod.png -gravity east -crop -201 crop.png
+        for j in range(self._h):
+            # Choose first n items in the list
+            idx_sub = idx[j * self._w : (j + 1) * self._w]
+            for i in idx_sub[1:]:
+                subprocess.call(
+                    [
+                        "convert",
+                        tmp_path / f"{str(i)}.png",
+                        "-gravity",
+                        "east",
+                        "-crop",
+                        "-20",
+                        # str(self._squish_l),
+                        # "+repage",
+                        tmp_path / f"{str(i)}.png",
+                    ]
+                )
+            # for i in idx_sub[:-1] if len(idx_sub) > 1 else idx_sub:
+            #     subprocess.call(
+            #         [
+            #             "convert",
+            #             tmp_path / f"{str(i)}.png",
+            #             "-gravity",
+            #             "west",
+            #             "-crop",
+            #             str(self._squish_r),
+            #             # "+repage",
+            #             tmp_path / f"{str(i)}.png",
+            #         ]
+            #     )
+            subprocess.call(
+                ["convert", "+smush", str(self._squish_r)]
+                # ["convert", "+append"]
+                + [tmp_path / f"{str(i)}.png" for i in idx_sub]
                 + [tmp_path / f"subfigure_{j}.png"]
             )
 
+    def _subprocess_append_vertical(self, tmp_path) -> None:
+        if self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
         # Create vertical subfigures from horizontal subfigures
         subprocess.call(
             ["convert", "-append"]
             + [tmp_path / f"subfigure_{j}.png" for j in range(self._h)]
-            + [self._output.resolve()]
+            + ["+repage", self._output.resolve()]
         )
+
+    def _subprocess_squash_vertical(self, tmp_path) -> None:
+        if self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
+        # Create vertical subfigures from horizontal subfigures
+        # convert compare-waveform-max-aod.png -gravity South -crop +0-29 crop.png
+        for j in range(self._h)[1:]:
+            subprocess.call(
+                [
+                    "convert",
+                    tmp_path / f"subfigure_{j}.png",
+                    "-gravity",
+                    "south",
+                    "-crop",
+                    "+0-30",
+                    "+repage",
+                    tmp_path / f"subfigure_{j}.png",
+                ]
+            )
+        # for j in range(self._h)[:-1]:
+        #     print(j)
+        #     subprocess.call(
+        #         [
+        #             "convert",
+        #             tmp_path / f"subfigure_{j}.png",
+        #             "-gravity",
+        #             "north",
+        #             "-crop",
+        #             "+0-124",
+        #             "+repage",
+        #             tmp_path / f"subfigure_{j}.png",
+        #         ]
+        #     )
+        subprocess.call(
+            # ["convert", "-smush", str(self._squish_b)]
+            ["convert", "-smush", "-20"]
+            # ["convert", "-append"]
+            + [tmp_path / f"subfigure_{j}.png" for j in range(self._h)]
+            + ["+repage", self._output.resolve()]
+        )
+
+    def _run_subprocess(self) -> None:
+        # In case several python runtimes use this class, we use a temporary directory
+        # to which we save the files generated from the intermediate subprocess calls.
+        # This way we will not experience conflicts when calling the combine class from
+        # two or more parallel python runtimes.
+        tmp_dir = tempfile.TemporaryDirectory()
+        if self._w is None or self._h is None:
+            raise ValueError("You need to specify the files and grid first.")
+        tmp_path = pathlib.Path(tmp_dir.name)
+        self._subprocess_labeler(tmp_path)
+        if self._squish:
+            self._subprocess_squash_horizontal(tmp_path)
+        else:
+            self._subprocess_append_horizontal(tmp_path)
+        if self._squish:
+            self._subprocess_squash_vertical(tmp_path)
+        else:
+            self._subprocess_append_vertical(tmp_path)
 
         # Delete temporary files
         tmp_dir.cleanup()
