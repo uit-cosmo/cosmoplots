@@ -1,4 +1,4 @@
-"""Combine cosmoplots images in a subfigure layout."""
+"""Combine images in a subfigure layout."""
 
 # `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
 from __future__ import annotations
@@ -9,7 +9,7 @@ import tempfile
 
 
 class Combine:
-    """Combine images made with the cosmoplots mplstyle into a subfigure layout."""
+    """Combine images into a subfigure layout."""
 
     def __init__(self) -> None:
         self._gravity = "northwest"
@@ -162,6 +162,7 @@ class Combine:
         except subprocess.CalledProcessError as e:
             raise ChildProcessError(
                 "Calling `convert --help` did not work. Are you sure you have imagemagick installed?"
+                " If not, resort to the ImageMagick website: https://imagemagick.org/script/download.php"
             ) from e
 
     def _run_subprocess(self) -> None:
@@ -173,6 +174,7 @@ class Combine:
         if self._w is None or self._h is None:
             raise ValueError("You need to specify the files and grid first.")
         idx = list(range(len(self._files)))
+        tmp_path = pathlib.Path(tmp_dir.name)
         for i, file, label in zip(idx, self._files, self._labels):
             # Add label to images
             subprocess.call(
@@ -188,7 +190,7 @@ class Combine:
                         f"gravity {self._gravity} fill {self._color} text"
                         f" {self._pos[0]},{self._pos[1]} '{label}'"
                     ),
-                    pathlib.Path(tmp_dir.name) / f"{str(i)}.png",
+                    tmp_path / f"{str(i)}.png",
                 ]
             )
         # Create horizontal subfigures
@@ -197,17 +199,14 @@ class Combine:
             idx_sub = idx[j * self._w : (j + 1) * self._w]
             subprocess.call(
                 ["convert", "+append"]
-                + [pathlib.Path(tmp_dir.name) / f"{str(i)}.png" for i in idx_sub]
-                + [pathlib.Path(tmp_dir.name) / f"subfigure_{j}.png"]
+                + [tmp_path / f"{str(i)}.png" for i in idx_sub]
+                + [tmp_path / f"subfigure_{j}.png"]
             )
 
         # Create vertical subfigures from horizontal subfigures
         subprocess.call(
             ["convert", "-append"]
-            + [
-                pathlib.Path(tmp_dir.name) / f"subfigure_{j}.png"
-                for j in range(self._h)
-            ]
+            + [tmp_path / f"subfigure_{j}.png" for j in range(self._h)]
             + [self._output.resolve()]
         )
 
