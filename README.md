@@ -42,19 +42,34 @@ import numpy as np
 import cosmoplots
 import matplotlib as mpl
 
+# Setup
 mpl.style.use("cosmoplots.default")
-a = np.exp(np.linspace(-3, 5, 100))
+a = np.exp(np.linspace(-3, 1, 100))
+
+# Plotting
 fig = plt.figure()
-ax = plt.gca()
-ax.set_xlabel("X Axis")
-ax.set_ylabel("Y Axis")
+ax1 = plt.gca()
+ax1.set_xlabel("X Axis")
+ax1.set_ylabel("Y Axis")
 base = 2  # Default is 10, but 2 works equally well
-cosmoplots.change_log_axis_base(ax, "x", base=base)
+# Do plotting ...
+ax1.loglog(a)
+# It is recommended to call the change_log_axis_base function after doing all the
+# plotting. By default, it will try to infer the scaling used for the axis and only
+# adjust accordingly.
+cosmoplots.change_log_axis_base(ax1, base=base)
+# Plotting
+fig = plt.figure()
+ax2 = plt.gca()
+ax2.set_xlabel("X Axis")
+ax2.set_ylabel("Y Axis")
+base = 2  # Default is 10, but 2 works equally well
+cosmoplots.change_log_axis_base(ax2, "x", base=base)
 # Do plotting ...
 # If you use "plot", the change_log_axis_base can be called at the top (along with add_axes
 # etc.), but using loglog, semilogx, semilogy will re-set, and the change_log_axis_base
 # function must be called again.
-ax.plot(a)
+ax2.plot(a)
 plt.show()
 ```
 
