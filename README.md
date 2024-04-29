@@ -160,6 +160,7 @@ import numpy as np
 
 import cosmoplots
 
+<<<<<<< HEAD
 mpl.style.use("cosmoplots.default")
 
 
@@ -207,6 +208,12 @@ cosmoplots.Combine().help()
 
 ## Muliple subfigures
 ```python
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+import cosmoplots
+
 mpl.style.use(["cosmoplots.default"])
 rows = 4
 columns = 1
