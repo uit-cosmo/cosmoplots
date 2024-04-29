@@ -2,6 +2,7 @@
 
 # `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
 from __future__ import annotations
+import warnings
 
 import pathlib
 import subprocess
@@ -154,6 +155,12 @@ class Combine:
                 output
                 if output.name.endswith(self._ft)
                 else output.with_suffix(self._ft)
+            )
+        if self._ft in [".eps", ".pdf"]:
+            warnings.warn(
+                "The ImageMagick `convert` command does not work well with vector"
+                " formats. Consider combining the plots directly using matplotlib,"
+                " or change to a different format, such as 'png' or 'jpg'.",
             )
         if not self._output.parents[0].exists():
             raise FileNotFoundError(

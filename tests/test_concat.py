@@ -85,26 +85,26 @@ def test_combine_ft(tmp_path: pathlib.Path) -> None:
 
     def _combine() -> None:
         plot()
-        plt.savefig(tmp_path / "test1.eps")
+        plt.savefig(tmp_path / "test1.jpg")
         plot()
-        plt.savefig(tmp_path / "test2.eps")
+        plt.savefig(tmp_path / "test2.jpg")
         plot()
-        plt.savefig(tmp_path / "test3.eps")
+        plt.savefig(tmp_path / "test3.jpg")
         plot()
-        plt.savefig(tmp_path / "test4.eps")
+        plt.savefig(tmp_path / "test4.jpg")
         cosmoplots.combine(
-            tmp_path / "test1.eps",
-            tmp_path / "test2.eps",
-            tmp_path / "test3.eps",
-            tmp_path / "test4.eps",
-        ).in_grid(w=2, h=2).save(tmp_path / "out.eps")
+            tmp_path / "test1.jpg",
+            tmp_path / "test2.jpg",
+            tmp_path / "test3.jpg",
+            tmp_path / "test4.jpg",
+        ).in_grid(w=2, h=2).save(tmp_path / "out.jpg")
 
     if platform == "win32":
         with pytest.raises(ChildProcessError):
             _combine()
     else:
         _combine()
-        first_img = tmp_path / "out.eps"
+        first_img = tmp_path / "out.jpg"
         assert first_img.exists()
 
 def test_in_grid_not_specified(tmp_path: pathlib.Path) -> None:
