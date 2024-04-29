@@ -160,7 +160,6 @@ import numpy as np
 
 import cosmoplots
 
-<<<<<<< HEAD
 mpl.style.use("cosmoplots.default")
 
 
