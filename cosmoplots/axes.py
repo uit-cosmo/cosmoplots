@@ -91,6 +91,22 @@ def change_log_axis_base(
     return axes
 
 def figure_multiple_rows_columns(rows: int, columns: int):
+    """Returns a figure with axes which is appropriate for (rows, columns) subfigures.
+
+    Parameters
+    ----------
+    rows : int
+        The number of rows in the figure
+    columns : int
+        The number of columns in the figure
+
+    Returns
+    -------
+    plt.Figure
+        The figure object
+    plt.Axes
+        A list of all the axes objects owned by the figure
+    """
     # Returns a figure with axes which is appropriate for 
     # (rows, columns) subfigures
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
