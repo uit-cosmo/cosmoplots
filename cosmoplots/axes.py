@@ -90,12 +90,19 @@ def change_log_axis_base(
         )
     return axes
 
-def multiple_rows_columns(rows, columns):
-    # Changes the figsize so it is appropriate for 
+def figure_multiple_rows_columns(rows: int, columns: int):
+    # Returns a figure with axes which is appropriate for 
     # (rows, columns) subfigures
-    mpl.rcParams['figure.figsize'][0] = columns*3.37
-    mpl.rcParams['figure.figsize'][1] = rows*2.08277
-    mpl.rcParams['figure.subplot.left'] = 0.2 / columns
-    mpl.rcParams['figure.subplot.right'] = 1 - 0.05 / columns
-    mpl.rcParams['figure.subplot.bottom'] = 0.2 / rows
-    mpl.rcParams['figure.subplot.top'] = 1 - 0.05 / rows
+    fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
+    axes = [None]*rows*columns
+    for c in range(columns):
+        for r in range(rows):
+            index = r*columns + c
+            left = (0.2)/columns + c/columns
+            bottom = (0.2)/rows + (rows-1-r)/rows # Start at the top
+            width = 0.75/columns
+            height = 0.75/rows
+            axes[index]  = fig.add_axes([left, bottom, width, height])
+
+    return fig, axes
+
