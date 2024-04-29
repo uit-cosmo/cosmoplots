@@ -1,6 +1,7 @@
 """Module for modifying the axis properties of plots."""
 
 from typing import List, Tuple, Union
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
@@ -88,3 +89,13 @@ def change_log_axis_base(
             )
         )
     return axes
+
+def multiple_rows_columns(rows, columns):
+    # Changes the figsize so it is appropriate for 
+    # (rows, columns) subfigures
+    mpl.rcParams['figure.figsize'][0] = columns*3.37
+    mpl.rcParams['figure.figsize'][1] = rows*2.08277
+    mpl.rcParams['figure.subplot.left'] = 0.2 / columns
+    mpl.rcParams['figure.subplot.right'] = 1 - 0.05 / columns
+    mpl.rcParams['figure.subplot.bottom'] = 0.2 / rows
+    mpl.rcParams['figure.subplot.top'] = 1 - 0.05 / rows
