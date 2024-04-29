@@ -29,10 +29,30 @@ import matplotlib as mpl
 
 # If you only want the default style
 mpl.style.use("cosmoplots.default")
-# If you want the two column style, combine it with the default. Setting it after is
-# important, since values from the default is overridden.
-mpl.style.use(["cosmoplots.default", "cosmoplots.two_columns"])
 ```
+
+### Muliple subfigures
+To make a figure with multiple rows or columns, use `cosmoplots.figure_multiple_rows_columns`:
+```python
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+import cosmoplots
+
+mpl.style.use(["cosmoplots.default"])
+rows = 1
+columns = 2
+
+fig, ax = cosmoplots.figure_multiple_rows_columns(rows, columns)
+a = np.linspace(-3,3,100)
+for i in range(rows*columns):
+    ax[i].set_xlabel("X Axis")
+    ax[i].set_ylabel("Y Axis")
+    ax[i].plot(i*a)
+plt.show()
+```
+![multifig](./assets/multifig.png)
 
 ## `change_log_axis_base`
 
@@ -203,3 +223,4 @@ cosmoplots.Combine().help()
 ```
 
 ![concat](./assets/concat.png)
+
