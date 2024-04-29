@@ -36,7 +36,7 @@ def change_log_axis_base(
 ) -> plt.Axes:
     """Change the tick formatter to not use powers 0 and 1 in logarithmic plots.
 
-    Change the logarithmic axes `10^0 -> 1` and `10^1 -> 10` (or the given base), i.e.
+    Change the logarithmic axis `10^0 -> 1` and `10^1 -> 10` (or the given base), i.e.
     without power, otherwise use the base to some power. For more robust and less error
     prone results, the plotting type is also re-set with the same base ('loglog',
     'semilogx' and 'semilogy').
@@ -50,8 +50,8 @@ def change_log_axis_base(
     which : str | None, optional
         Whether to update both x and y axis, or just one of them ("both", "x" or "y").
         If no value is given, it defaults to None and the function will try to infer the
-        axes from the current plotting type. If the axes are already linear, the
-        function will return the axes without any changes. Defaults to None.
+        axis from the current plotting type. If the axis are already linear, the
+        function will return the axes object without any changes. Defaults to None.
     base : float
         The base of the logarithm. Defaults to base 10 (same as loglog, etc.)
 
@@ -69,7 +69,7 @@ def change_log_axis_base(
     else:
         axs, pltype = _check_axes_scales(axes)
     if not axs and pltype == "linear":
-        # If the axes are already linear, just return the axes silently
+        # If both the axes are already linear, just return the axes object silently
         return axes
     getattr(axes, pltype)(base=base)
     for ax in axs:

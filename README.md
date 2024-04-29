@@ -53,7 +53,7 @@ ax1.set_xlabel("X Axis")
 ax1.set_ylabel("Y Axis")
 base = 2  # Default is 10, but 2 works equally well
 # Do plotting ...
-ax1.loglog(a)
+ax1.semilogx(a)
 # It is recommended to call the change_log_axis_base function after doing all the
 # plotting. By default, it will try to infer the scaling used for the axis and only
 # adjust accordingly.
