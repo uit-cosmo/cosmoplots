@@ -160,7 +160,8 @@ class Combine:
             warnings.warn(
                 "The ImageMagick `convert` command does not work well with vector"
                 " formats. Consider combining the plots directly using matplotlib,"
-                " or change to a different format, such as 'png' or 'jpg'.",
+                " or change to a different format, such as 'png' or 'jpg'. See also"
+                " https://www.imagemagick.org/Usage/formats/#vector",
             )
         if not self._output.parents[0].exists():
             raise FileNotFoundError(
