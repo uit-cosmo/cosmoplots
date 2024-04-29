@@ -138,3 +138,28 @@ plt.show()
 | `hex_colors.png` | hex_colors_example.png |
 | :--------: | :--------: | 
 | ![colors](./assets/hex_colors.png) | ![colors](./assets/hex_colors_example.png) |
+
+## Muliple subfigures
+
+```python
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+import cosmoplots
+
+mpl.style.use(["cosmoplots.default"])
+rows = 4
+columns = 1
+cosmoplots.multiple_rows_columns(rows, columns)
+
+fig = plt.figure()
+a = np.linspace(-3,3,100)
+for i in range(1,rows*columns+1):
+    ax = fig.add_subplot(rows, columns,i)
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.plot(i*a)
+plt.show()
+```
+![multifig](./assets/multifig.png)
