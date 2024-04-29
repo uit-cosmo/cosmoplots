@@ -50,7 +50,6 @@ for i in range(rows*columns):
     ax[i].set_xlabel("X Axis")
     ax[i].set_ylabel("Y Axis")
     ax[i].plot(i*a)
-    ax[i].set_title(str(i))
 plt.show()
 ```
 ![multifig](./assets/multifig.png)
