@@ -17,7 +17,8 @@ class Combine:
         self._pos = (10.0, 10.0)
         self._font = "Times-New-Roman"
         self._color = "black"
-        self._output = pathlib.Path("output.png")
+        self._ft: str = ".png"
+        self._output = pathlib.Path(f"output{self._ft}")
         self._files: list[pathlib.Path] = []
         self._labels: list[str] = []
         self._w: int | None = None
@@ -140,13 +141,19 @@ class Combine:
         self._run_subprocess()
 
     def _check_params_before_save(
-        self, output: pathlib.Path | str | None = None
+        self, output: pathlib.Path | str | None = None, ft: str | None = None
     ) -> None:
         # Check if there are files
         if output is not None:
             output = pathlib.Path(output)
+            if ft is None:
+                self._ft = output.suffix or ".png"
+            else:
+                self._ft = ft if ft.startswith(".") else f".{ft}"
             self._output = (
-                output if output.name.endswith("png") else output.with_suffix(".png")
+                output
+                if output.name.endswith(self._ft)
+                else output.with_suffix(self._ft)
             )
         if not self._output.parents[0].exists():
             raise FileNotFoundError(
@@ -190,7 +197,7 @@ class Combine:
                         f"gravity {self._gravity} fill {self._color} text"
                         f" {self._pos[0]},{self._pos[1]} '{label}'"
                     ),
-                    tmp_path / f"{str(i)}.png",
+                    tmp_path / f"{str(i)}{self._ft}",
                 ]
             )
         # Create horizontal subfigures
@@ -199,14 +206,14 @@ class Combine:
             idx_sub = idx[j * self._w : (j + 1) * self._w]
             subprocess.call(
                 ["convert", "+append"]
-                + [tmp_path / f"{str(i)}.png" for i in idx_sub]
-                + [tmp_path / f"subfigure_{j}.png"]
+                + [tmp_path / f"{str(i)}{self._ft}" for i in idx_sub]
+                + [tmp_path / f"subfigure_{j}{self._ft}"]
             )
 
         # Create vertical subfigures from horizontal subfigures
         subprocess.call(
             ["convert", "-append"]
-            + [tmp_path / f"subfigure_{j}.png" for j in range(self._h)]
+            + [tmp_path / f"subfigure_{j}{self._ft}" for j in range(self._h)]
             + [self._output.resolve()]
         )
 
@@ -218,9 +225,9 @@ class Combine:
 
         def _conv_cmd(lab) -> str:
             return (
-                f"    convert in-{lab}.png -font {self._font} -pointsize"
+                f"    convert in-{lab}{self._ft} -font {self._font} -pointsize"
                 f' {self._fontsize} -draw "gravity {self._gravity} fill {self._color}'
-                f" text {self._pos[0]},{self._pos[1]} '({lab})'\" {lab}.png\n"
+                f" text {self._pos[0]},{self._pos[1]} '({lab})'\" {lab}{self._ft}\n"
             )
 
         print(
@@ -230,12 +237,12 @@ class Combine:
             f"{_conv_cmd('c')}"
             f"{_conv_cmd('d')}"
             "Then to combine them horizontally:\n"
-            "    convert +append a.png b.png ab.png\n"
-            "    convert +append c.png d.png cd.png\n"
+            f"    convert +append a{self._ft} b{self._ft} ab{self._ft}\n"
+            f"    convert +append c{self._ft} d{self._ft} cd{self._ft}\n"
             "And finally stack them vertically:\n"
-            "    convert -append ab.png cd.png out.png\n"
+            f"    convert -append ab{self._ft} cd{self._ft} out{self._ft}\n"
             "Optionally delete all temporary files:\n"
-            "    rm a.png b.png c.png d.png ab.png cd.png"
+            f"    rm a{self._ft} b{self._ft} c{self._ft} d{self._ft} ab{self._ft} cd{self._ft}"
         )
 
 

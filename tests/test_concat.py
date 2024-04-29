@@ -80,6 +80,33 @@ def test_combine(tmp_path: pathlib.Path) -> None:
         assert first_img.exists()
 
 
+def test_combine_ft(tmp_path: pathlib.Path) -> None:
+    """Test the `combine` function with different file types."""
+
+    def _combine() -> None:
+        plot()
+        plt.savefig(tmp_path / "test1.eps")
+        plot()
+        plt.savefig(tmp_path / "test2.eps")
+        plot()
+        plt.savefig(tmp_path / "test3.eps")
+        plot()
+        plt.savefig(tmp_path / "test4.eps")
+        cosmoplots.combine(
+            tmp_path / "test1.eps",
+            tmp_path / "test2.eps",
+            tmp_path / "test3.eps",
+            tmp_path / "test4.eps",
+        ).in_grid(w=2, h=2).save(tmp_path / "out.eps")
+
+    if platform == "win32":
+        with pytest.raises(ChildProcessError):
+            _combine()
+    else:
+        _combine()
+        first_img = tmp_path / "out.eps"
+        assert first_img.exists()
+
 def test_in_grid_not_specified(tmp_path: pathlib.Path) -> None:
     """Test error when `in_grid` has not been called."""
 
