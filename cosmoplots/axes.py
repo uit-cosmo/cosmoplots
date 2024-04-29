@@ -107,8 +107,6 @@ def figure_multiple_rows_columns(rows: int, columns: int):
     plt.Axes
         A list of all the axes objects owned by the figure
     """
-    # Returns a figure with axes which is appropriate for 
-    # (rows, columns) subfigures
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
     axes = [None]*rows*columns
     for c in range(columns):
