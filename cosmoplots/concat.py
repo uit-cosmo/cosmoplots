@@ -43,36 +43,39 @@ class Combine:
 
     def using(
         self,
-        gravity: str = "northwest",
-        pos: tuple[float, float] = (10.0, 10.0),
-        font: str = "Times-New-Roman",
-        fontsize: int = 100,
-        color: str = "black",
+        *,
+        gravity: str | None = None,
+        pos: tuple[float, float] | None = None,
+        font: str | None = None,
+        fontsize: int | None = None,
+        color: str | None = None,
     ) -> Combine:
         """Set text properties.
 
+        The properties must be given as keyword arguments to take effect.
+
         Parameters
         ----------
-        gravity : str
+        gravity : str, optional
             Where the position of the text is relative to in the subfigure. Default is
             `northwest`. Possible values are `north`, `northeast`, `northwest`, `south`,
             `southeast`, `southwest`, `west`, `east` and `center`.
-        pos : tuple[float, float]
+        pos : tuple[float, float], optional
             The position in the subfigure relative to `gravity`. Default is `(10.0,
             10.0)`.
-        font : str
+        font : str, optional
             The type of font to use, default is Times New Roman. See `convert -list
             font` for a list of available fonts.
-        fontsize : int
-            The size of the font in pointsize. Default is `100`.
-        color : str
+        fontsize : int, optional
+            The size of the font in pointsize. Default is `8`.
+        color : str, optional
             The color of the text. Default is `black`.
         """
-        self._gravity = gravity
-        self._fontsize = fontsize
-        self._pos = pos
-        self._font = font
-        self._color = color
+        self._gravity = gravity or self._gravity
+        self._fontsize = fontsize or self._fontsize
+        self._pos = pos or self._pos
+        self._font = font or self._font
+        self._color = color or self._color
         return self
 
     def in_grid(self, w: int, h: int) -> Combine:
