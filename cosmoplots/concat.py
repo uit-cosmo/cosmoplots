@@ -41,7 +41,11 @@ class Combine:
         self._color = "black"
         self._ft: str = ".png"
         self._output = pathlib.Path(f"output{self._ft}")
-        self._dpi = int(plt.rcParams["savefig.dpi"])
+        self._dpi = (
+            plt.rcParams["savefig.dpi"]
+            if isinstance(plt.rcParams["savefig.dpi"], float)
+            else plt.rcParams["figure.dpi"]
+        )
         self._files: list[pathlib.Path] = []
         self._labels: list[str] = []
         self._w: int | None = None
@@ -151,14 +155,16 @@ class Combine:
             count += 1
         return characters
 
-    def save(self, output: pathlib.Path | str | None = None, dpi: int | None = None) -> None:
+    def save(
+        self, output: pathlib.Path | str | None = None, dpi: float | int | None = None
+    ) -> None:
         """Save the combined images as a png file.
 
         Parameters
         ----------
         output : pathlib.Path | str, optional
             Give the name of the output file, default is `output.png`.
-        dpi : int, optional
+        dpi : float | int, optional
             The resolution that the input files were saved with. Default is the same as
             the matplotlib savefig dpi.
         """
