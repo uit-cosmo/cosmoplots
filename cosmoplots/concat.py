@@ -2,11 +2,30 @@
 
 # `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
 from __future__ import annotations
-import warnings
 
+import logging
 import pathlib
 import subprocess
 import tempfile
+import warnings
+from contextlib import contextmanager
+
+import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties, findfont
+
+
+@contextmanager
+def _ignore_logging_context():
+    loggers = [logging.getLogger(name) for name in logging.root.manager.loggerDict]
+    # turn loggers off
+    for logger in loggers:
+        logger.disabled = True
+    logging.root.disabled = True
+    yield
+    # turn loggers back on
+    for logger in loggers:
+        logger.disabled = False
+    logging.root.disabled = False
 
 
 class Combine:
@@ -14,9 +33,11 @@ class Combine:
 
     def __init__(self) -> None:
         self._gravity = "northwest"
-        self._fontsize = 100
         self._pos = (10.0, 10.0)
-        self._font = "Times-New-Roman"
+        with _ignore_logging_context():
+            font = findfont(FontProperties(family=plt.rcParams["font.serif"]))
+        self._font = font
+        self._fontsize = int(plt.rcParams["font.size"])
         self._color = "black"
         self._ft: str = ".png"
         self._output = pathlib.Path(f"output{self._ft}")
@@ -195,7 +216,11 @@ class Combine:
             subprocess.call(
                 [
                     "convert",
+                    "-units",
+                    "PixelsPerInch",
                     file,
+                    "-density",
+                    "300",
                     "-font",
                     self._font,
                     "-pointsize",
