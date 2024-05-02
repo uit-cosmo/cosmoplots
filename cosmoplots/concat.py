@@ -67,7 +67,7 @@ class Combine:
             The type of font to use, default is Times New Roman. See `convert -list
             font` for a list of available fonts.
         fontsize : int, optional
-            The size of the font in pointsize. Default is `8`.
+            The size of the font in pointsize. Default is `100`.
         color : str, optional
             The color of the text. Default is `black`.
         """
