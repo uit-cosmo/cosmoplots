@@ -34,6 +34,7 @@ def test_convert_help() -> None:
 def test_help(capfd) -> None:
     """Test the `help` method."""
     # By default, the '.ttf' file is specified, but that's hard to test against.
+    plt.rcParams["font.size"] = 100
     cosmoplots.Combine().using(font="Times-New-Roman").help()
     out, err = capfd.readouterr()
     help = (
