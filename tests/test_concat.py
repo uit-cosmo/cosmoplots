@@ -108,6 +108,7 @@ def test_combine_ft(tmp_path: pathlib.Path) -> None:
         first_img = tmp_path / "out.jpg"
         assert first_img.exists()
 
+
 def test_in_grid_not_specified(tmp_path: pathlib.Path) -> None:
     """Test error when `in_grid` has not been called."""
 
@@ -152,6 +153,13 @@ def test_output_not_found(tmp_path: pathlib.Path) -> None:
             tmp_path / "test3.png",
             tmp_path / "test4.png",
         ).in_grid(w=2, h=2).save(tmp_path / "second_level" / "out.png")
+
+
+def test_using_update() -> None:
+    """Test that the `using` method can be called multiple times."""
+    c = cosmoplots.Combine().using(fontsize=12)
+    c.using(gravity="southwest")
+    assert c._fontsize == 12
 
 
 def test_input_not_found() -> None:
