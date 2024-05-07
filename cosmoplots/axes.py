@@ -2,6 +2,8 @@
 
 from typing import List, Tuple, Union
 import matplotlib as mpl
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
@@ -14,7 +16,7 @@ def _convert_scale_name(scale: str, axis: str) -> str:
     return f"{axis}axis" if scale == "log" else "none"
 
 
-def _check_axes_scales(axes: plt.Axes) -> Tuple[List[str], str]:
+def _check_axes_scales(axes: Axes) -> Tuple[List[str], str]:
     xscale, yscale = axes.get_xscale(), axes.get_yscale()
     xs, ys = _convert_scale_name(xscale, "x"), _convert_scale_name(yscale, "y")
     if xs == "xaxis" and ys == "yaxis":
@@ -33,8 +35,8 @@ def _check_axes_scales(axes: plt.Axes) -> Tuple[List[str], str]:
 
 
 def change_log_axis_base(
-    axes: plt.Axes, which: Union[str, None] = None, base: float = 10
-) -> plt.Axes:
+    axes: Axes, which: Union[str, None] = None, base: float = 10
+) -> Axes:
     """Change the tick formatter to not use powers 0 and 1 in logarithmic plots.
 
     Change the logarithmic axis `10^0 -> 1` and `10^1 -> 10` (or the given base), i.e.
@@ -90,7 +92,7 @@ def change_log_axis_base(
         )
     return axes
 
-def figure_multiple_rows_columns(rows: int, columns: int):
+def figure_multiple_rows_columns(rows: int, columns: int) -> Tuple[Figure, List[Axes]]:
     """Returns a figure with axes which is appropriate for (rows, columns) subfigures.
 
     Parameters
@@ -108,15 +110,14 @@ def figure_multiple_rows_columns(rows: int, columns: int):
         A list of all the axes objects owned by the figure
     """
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
-    axes = [None]*rows*columns
+    axes = []
     for c in range(columns):
         for r in range(rows):
-            index = r*columns + c
             left = (0.2)/columns + c/columns
             bottom = (0.2)/rows + (rows-1-r)/rows # Start at the top
             width = 0.75/columns
             height = 0.75/rows
-            axes[index]  = fig.add_axes([left, bottom, width, height])
+            axes.append(fig.add_axes((left, bottom, width, height)))
 
     return fig, axes
 
