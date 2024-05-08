@@ -2,11 +2,30 @@
 
 # `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
 from __future__ import annotations
-import warnings
 
+import logging
 import pathlib
 import subprocess
 import tempfile
+import warnings
+from contextlib import contextmanager
+
+import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties, findfont
+
+
+@contextmanager
+def _ignore_logging_context():
+    loggers = [logging.getLogger(name) for name in logging.root.manager.loggerDict]
+    # turn loggers off
+    for logger in loggers:
+        logger.disabled = True
+    logging.root.disabled = True
+    yield
+    # turn loggers back on
+    for logger in loggers:
+        logger.disabled = False
+    logging.root.disabled = False
 
 
 class Combine:
@@ -14,12 +33,19 @@ class Combine:
 
     def __init__(self) -> None:
         self._gravity = "northwest"
-        self._fontsize = 100
         self._pos = (10.0, 10.0)
-        self._font = "Times-New-Roman"
+        with _ignore_logging_context():
+            font = findfont(FontProperties(family=plt.rcParams["font.serif"]))
+        self._font = font
+        self._fontsize = int(plt.rcParams["font.size"])
         self._color = "black"
         self._ft: str = ".png"
         self._output = pathlib.Path(f"output{self._ft}")
+        self._dpi = (
+            plt.rcParams["savefig.dpi"]
+            if isinstance(plt.rcParams["savefig.dpi"], float)
+            else plt.rcParams["figure.dpi"]
+        )
         self._files: list[pathlib.Path] = []
         self._labels: list[str] = []
         self._w: int | None = None
@@ -67,7 +93,8 @@ class Combine:
             The type of font to use, default is Times New Roman. See `convert -list
             font` for a list of available fonts.
         fontsize : int, optional
-            The size of the font in pointsize. Default is `100`.
+            The size of the font in pointsize. Default is to use the "font.size" field
+            in the matplotlib rcParams.
         color : str, optional
             The color of the text. Default is `black`.
         """
@@ -132,14 +159,20 @@ class Combine:
             count += 1
         return characters
 
-    def save(self, output: pathlib.Path | str | None = None) -> None:
+    def save(
+        self, output: pathlib.Path | str | None = None, dpi: float | int | None = None
+    ) -> None:
         """Save the combined images as a png file.
 
         Parameters
         ----------
         output : pathlib.Path | str, optional
             Give the name of the output file, default is `output.png`.
+        dpi : float | int, optional
+            The resolution that the input files were saved with. Default is the same as
+            the matplotlib savefig dpi.
         """
+        self._dpi = dpi or self._dpi
         self._check_params_before_save(output)
         self._check_cli_available()
         self._run_subprocess()
@@ -198,7 +231,11 @@ class Combine:
             subprocess.call(
                 [
                     "convert",
+                    "-units",
+                    "PixelsPerInch",
                     file,
+                    "-density",
+                    str(self._dpi),
                     "-font",
                     self._font,
                     "-pointsize",
