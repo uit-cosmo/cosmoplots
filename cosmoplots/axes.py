@@ -1,7 +1,6 @@
 """Module for modifying the axis properties of plots."""
 
 from typing import List, Tuple, Union
-import matplotlib as mpl
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
