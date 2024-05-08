@@ -24,23 +24,21 @@ poetry install
 Set your `rcparams` before plotting in your code, for example:
 
 ```python
+import matplotlib.pyplot as plt
 import cosmoplots
-import matplotlib as mpl
-
 # If you only want the default style
-mpl.style.use("cosmoplots.default")
+plt.style.use(["cosmoplots.default"])
 ```
 
 ### Muliple subfigures
 To make a figure with multiple rows or columns, use `cosmoplots.figure_multiple_rows_columns`:
 ```python
-import matplotlib as mpl
 import matplotlib.pyplot as plt
+import cosmoplots
+plt.style.use(["cosmoplots.default"])
+
 import numpy as np
 
-import cosmoplots
-
-mpl.style.use(["cosmoplots.default"])
 rows = 1
 columns = 2
 
@@ -58,12 +56,10 @@ plt.show()
 
 ```python
 import matplotlib.pyplot as plt
-import numpy as np
 import cosmoplots
-import matplotlib as mpl
+plt.style.use(["cosmoplots.default"])
+import numpy as np
 
-# Setup
-mpl.style.use("cosmoplots.default")
 a = np.exp(np.linspace(-3, 1, 100))
 
 # Plotting
@@ -96,9 +92,8 @@ plt.show()
 ## `matplotlib` vs. `cosmoplots` defaults
 
 ```python
-import cosmoplots
-import matplotlib as mpl
 import matplotlib.pyplot as plt
+import cosmoplots
 import numpy as np
 
 def plot() -> None:
@@ -110,13 +105,13 @@ def plot() -> None:
     ax.semilogy(a)
 
 # Matplotlib ------------------------------------------------------------------------- #
-with mpl.style.context("default"):
+with plt.style.context("default"):
     plot()
     # plt.savefig("assets/matplotlib.png")
     plt.show()
 
 # Cosmoplots ------------------------------------------------------------------------- #
-with mpl.style.context("cosmoplots.default"):
+with plt.style.context("cosmoplots.default"):
     plot()
     # plt.savefig("assets/cosmoplots.png")
     plt.show()
@@ -137,8 +132,7 @@ The colors change gradually from bright to dark or vice versa.
 ```python
 import matplotlib.pyplot as plt
 import cosmoplots
-
-axes_size = cosmoplots.set_rcparams_dynamo(plt.rcParams, num_cols=1, ls="thin")
+plt.style.use(["cosmoplots.default"])
 
 
 color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
@@ -148,7 +142,7 @@ plt.savefig("./assets/hex_colors.png")
 print(color_list) #['#fde725', '#5ec962', '#21918c', '#3b528b', '#440154']
 
 fig = plt.figure()
-ax = fig.add_axes(axes_size)
+ax = plt.gca()
 for i, color in enumerate(color_list):
     ax.plot([1,2],[i,i+1], c = color)
 
@@ -174,13 +168,10 @@ A `help` method that prints the `imagemagick` commands that are used under the h
 also available.
 
 ```python
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import numpy as np
-
 import cosmoplots
-
-mpl.style.use("cosmoplots.default")
+plt.style.use("cosmoplots.default")
+import numpy as np
 
 
 def plot(i) -> None:
