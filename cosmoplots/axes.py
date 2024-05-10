@@ -91,7 +91,7 @@ def change_log_axis_base(
         )
     return axes
 
-def figure_multiple_rows_columns(rows: int, columns: int) -> Tuple[Figure, List[Axes]]:
+def figure_multiple_rows_columns(rows: int, columns: int, labels: List[str] | None = None) -> Tuple[Figure, List[Axes]]:
     """Returns a figure with axes which is appropriate for (rows, columns) subfigures.
 
     Parameters
@@ -100,6 +100,8 @@ def figure_multiple_rows_columns(rows: int, columns: int) -> Tuple[Figure, List[
         The number of rows in the figure
     columns : int
         The number of columns in the figure
+    labels : List[str] | None
+        The labels to be applied to each subfigure. Defaults to (a), (b), (c), ...
 
     Returns
     -------
@@ -110,6 +112,7 @@ def figure_multiple_rows_columns(rows: int, columns: int) -> Tuple[Figure, List[
     """
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
     axes = []
+    labels = labels or gen_labels(rows*columns)
     for c in range(columns):
         for r in range(rows):
             left = (0.2)/columns + c/columns
@@ -117,6 +120,9 @@ def figure_multiple_rows_columns(rows: int, columns: int) -> Tuple[Figure, List[
             width = 0.75/columns
             height = 0.75/rows
             axes.append(fig.add_axes((left, bottom, width, height)))
+            axes[-1].text(-0.15, 1, labels[columns*r+c], horizontalalignment='center', verticalalignment='center', transform=axes[-1].transAxes)
 
     return fig, axes
 
+def gen_labels(len_labels):
+    return [r"$\mathrm({})$".format(chr(97+l)) for l in range(len_labels)]
