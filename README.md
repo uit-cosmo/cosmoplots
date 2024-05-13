@@ -31,7 +31,8 @@ plt.style.use(["cosmoplots.default"])
 ```
 
 ### Muliple subfigures
-To make a figure with multiple rows or columns, use `cosmoplots.figure_multiple_rows_columns`:
+To make a figure with multiple rows or columns, use `cosmoplots.figure_multiple_rows_columns`.
+By default, the labels are $\mathrm{(a)}$, $\mathrm{(b)}$, $\mathrm{(c)}$, ..., but they may be replaced using the `labels` argument.
 ```python
 import matplotlib.pyplot as plt
 import cosmoplots
