@@ -120,8 +120,8 @@ def figure_multiple_rows_columns(rows: int, columns: int,
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
     axes = []
     labels = labels or [r"$\mathrm{{({})}}$".format(chr(97+l)) for l in range(rows*columns)] 
-    for c in range(columns):
-        for r in range(rows):
+    for r in range(rows):
+        for c in range(columns):
             left = (0.2)/columns + c/columns
             bottom = (0.2)/rows + (rows-1-r)/rows # Start at the top
             width = 0.75/columns
