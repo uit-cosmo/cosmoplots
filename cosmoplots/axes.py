@@ -92,7 +92,7 @@ def change_log_axis_base(
     return axes
 
 def figure_multiple_rows_columns(rows: int, columns: int, 
-                                 labels: List[str] | None = None,
+                                 labels: Union[List[str], None] = None,
                                  label_x: float = -0.2, label_y: float = 0.95,
                                  **kwargs) -> Tuple[Figure, List[Axes]]:
     """Returns a figure with axes which is appropriate for (rows, columns) subfigures.
@@ -114,7 +114,7 @@ def figure_multiple_rows_columns(rows: int, columns: int,
     -------
     plt.Figure
         The figure object
-    plt.Axes
+    List[plt.Axes]
         A list of all the axes objects owned by the figure
     """
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
