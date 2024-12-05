@@ -19,6 +19,8 @@ cd cosmoplots
 poetry install
 ```
 
+### LaTeX dependency
+
 The default style uses the default LaTeX font Computer Modern,
 
 ```python
