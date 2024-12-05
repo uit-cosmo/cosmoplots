@@ -21,7 +21,6 @@ text.usetex : True
 pdf.fonttype : 42
 font.family : serif 
 font.serif  : cm
-#font.family : "Times"
 font.size : 8
 axes.labelsize : 8
 legend.fontsize : 8

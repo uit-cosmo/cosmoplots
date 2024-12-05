@@ -19,6 +19,16 @@ cd cosmoplots
 poetry install
 ```
 
+The default style uses the default LaTeX font Computer Modern,
+
+```python
+text.usetex : True
+font.family : serif 
+font.serif  : cm
+```
+
+Text rendering may fail silently without a working LaTeX installation.
+
 ## Usage
 
 Set your `rcparams` before plotting in your code, for example:
@@ -31,8 +41,10 @@ plt.style.use(["cosmoplots.default"])
 ```
 
 ### Muliple subfigures
+
 To make a figure with multiple rows or columns, use `cosmoplots.figure_multiple_rows_columns`.
 By default, the labels are $\mathrm{(a)}$, $\mathrm{(b)}$, $\mathrm{(c)}$, ..., but they may be replaced using the `labels` argument.
+
 ```python
 import matplotlib.pyplot as plt
 import cosmoplots
@@ -51,6 +63,7 @@ for i in range(rows*columns):
     ax[i].plot(i*a)
 plt.show()
 ```
+
 ![multifig](./assets/multifig.png)
 
 ## `change_log_axis_base`
@@ -125,11 +138,11 @@ with plt.style.context("cosmoplots.default"):
 <!-- Links -->
 [poetry]: https://python-poetry.org
 
-
 ## `generate_hex_colors`
 
 This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the number of points of interest.
 The colors change gradually from bright to dark or vice versa.
+
 ```python
 import matplotlib.pyplot as plt
 import cosmoplots
@@ -150,8 +163,9 @@ for i, color in enumerate(color_list):
 plt.savefig("./assets/hex_colors_example.png")
 plt.show()
 ```
+
 | `hex_colors.png` | hex_colors_example.png |
-| :--------: | :--------: | 
+| :--------: | :--------: |
 | ![colors](./assets/hex_colors.png) | ![colors](./assets/hex_colors_example.png) |
 
 ## `combine`
@@ -215,4 +229,3 @@ cosmoplots.Combine().help()
 ```
 
 ![concat](./assets/concat.png)
-
