@@ -24,11 +24,11 @@ def plot() -> None:
     ax.semilogy(a)
 
 
-def test_magick_help() -> None:
+def test_magick_version() -> None:
     """Test that ImageMagick's magick command is available."""
-    result = subprocess.check_output(["magick", "--help"])
-    out = "b'Version: ImageMagick'"
-    assert str(result[:20]) == out
+    result = subprocess.check_output(["magick", "--version"])
+    out = "b'Version: ImageMagick 7'"
+    assert str(result[:22]) == out
 
 
 def test_help(capfd) -> None:
