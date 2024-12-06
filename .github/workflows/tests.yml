@@ -23,6 +23,8 @@ jobs:
       # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
+      - name: Install ImageMagick
+        uses: mfinelli/setup-imagemagick@v5
       - name: Print ImageMagick version
         run: magick --version
       - name: Upgrade pip
