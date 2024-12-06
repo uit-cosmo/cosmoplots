@@ -18,15 +18,15 @@ def plot() -> None:
     """Create a simple plot."""
     a = np.exp(np.linspace(-3, 5, 100))
     fig = plt.figure()
-    ax = fig.add_subplot()
+    ax = fig.gca()
     ax.set_xlabel("X Axis")
     ax.set_ylabel("Y Axis")
     ax.semilogy(a)
 
 
-def test_magick_help() -> None:
+def test_magick_convert_help() -> None:
     """Test that ImageMagick's magick command is available."""
-    result = subprocess.check_output(["magick", "--help"])
+    result = subprocess.check_output(["magick", "convert", "--help"])
     out = "b'Version: ImageMagick'"
     assert str(result[:20]) == out
 
@@ -39,15 +39,15 @@ def test_help(capfd) -> None:
     out, err = capfd.readouterr()
     help = (
         "To create images with labels:\n"
-        "    magick in-a.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(a)'\" a.png\n"
-        "    magick in-b.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(b)'\" b.png\n"
-        "    magick in-c.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(c)'\" c.png\n"
-        "    magick in-d.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(d)'\" d.png\n"
+        "    magick convert in-a.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(a)'\" a.png\n"
+        "    magick convert in-b.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(b)'\" b.png\n"
+        "    magick convert in-c.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(c)'\" c.png\n"
+        "    magick convert in-d.png -font Times-New-Roman -pointsize 100 -draw \"gravity northwest fill black text 10.0,10.0 '(d)'\" d.png\n"
         "Then to combine them horizontally:\n"
-        "    magick +append a.png b.png ab.png\n"
-        "    magick +append c.png d.png cd.png\n"
+        "    magick convert +append a.png b.png ab.png\n"
+        "    magick convert +append c.png d.png cd.png\n"
         "And finally stack them vertically:\n"
-        "    magick -append ab.png cd.png out.png\n"
+        "    magick convert -append ab.png cd.png out.png\n"
         "Optionally delete all temporary files:\n"
         "    rm a.png b.png c.png d.png ab.png cd.png\n"
     )

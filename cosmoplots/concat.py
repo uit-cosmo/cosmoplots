@@ -90,7 +90,7 @@ class Combine:
             The position in the subfigure relative to `gravity`. Default is `(10.0,
             10.0)`.
         font : str, optional
-            The type of font to use, default is Times New Roman. See `magick -list
+            The type of font to use, default is Times New Roman. See `magick convert -list
             font` for a list of available fonts.
         fontsize : int, optional
             The size of the font in pointsize. Default is to use the "font.size" field
@@ -194,7 +194,7 @@ class Combine:
             )
         if self._ft in [".eps", ".pdf"]:
             warnings.warn(
-                "The ImageMagick `magick` command does not work well with vector"
+                "The ImageMagick `magick convert` command does not work well with vector"
                 " formats. Consider combining the plots directly using matplotlib,"
                 " or change to a different format, such as 'png' or 'jpg'. See also"
                 " https://www.imagemagick.org/Usage/formats/#vector",
@@ -209,10 +209,10 @@ class Combine:
     @staticmethod
     def _check_cli_available() -> None:
         try:
-            subprocess.check_output("magick --help", shell=True)
+            subprocess.check_output("magick convert --help", shell=True)
         except subprocess.CalledProcessError as e:
             raise ChildProcessError(
-                "Calling `magick --help` did not work. Are you sure you have "
+                "Calling `magick convert --help` did not work. Are you sure you have "
                 "imagemagick installed? If not, resort to the ImageMagick website: "
                 "https://imagemagick.org/script/download.php"
             ) from e
@@ -232,6 +232,7 @@ class Combine:
             subprocess.call(
                 [
                     "magick",
+                    "convert",
                     "-units",
                     "PixelsPerInch",
                     file,
@@ -254,14 +255,14 @@ class Combine:
             # Choose first n items in the list
             idx_sub = idx[j * self._w : (j + 1) * self._w]
             subprocess.call(
-                ["magick", "+append"]
+                ["magick", "convert", "+append"]
                 + [tmp_path / f"{str(i)}{self._ft}" for i in idx_sub]
                 + [tmp_path / f"subfigure_{j}{self._ft}"]
             )
 
         # Create vertical subfigures from horizontal subfigures
         subprocess.call(
-            ["magick", "-append"]
+            ["magick", "convert", "-append"]
             + [tmp_path / f"subfigure_{j}{self._ft}" for j in range(self._h)]
             + [self._output.resolve()]
         )
@@ -274,7 +275,7 @@ class Combine:
 
         def _conv_cmd(lab) -> str:
             return (
-                f"    magick in-{lab}{self._ft} -font {self._font} -pointsize"
+                f"    magick convert in-{lab}{self._ft} -font {self._font} -pointsize"
                 f' {self._fontsize} -draw "gravity {self._gravity} fill {self._color}'
                 f" text {self._pos[0]},{self._pos[1]} '({lab})'\" {lab}{self._ft}\n"
             )
@@ -286,10 +287,10 @@ class Combine:
             f"{_conv_cmd('c')}"
             f"{_conv_cmd('d')}"
             "Then to combine them horizontally:\n"
-            f"    magick +append a{self._ft} b{self._ft} ab{self._ft}\n"
-            f"    magick +append c{self._ft} d{self._ft} cd{self._ft}\n"
+            f"    magick convert +append a{self._ft} b{self._ft} ab{self._ft}\n"
+            f"    magick convert +append c{self._ft} d{self._ft} cd{self._ft}\n"
             "And finally stack them vertically:\n"
-            f"    magick -append ab{self._ft} cd{self._ft} out{self._ft}\n"
+            f"    magick convert -append ab{self._ft} cd{self._ft} out{self._ft}\n"
             "Optionally delete all temporary files:\n"
             f"    rm a{self._ft} b{self._ft} c{self._ft} d{self._ft} ab{self._ft} cd{self._ft}"
         )
