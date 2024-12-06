@@ -21,7 +21,7 @@ poetry install
 
 ### LaTeX dependency
 
-The default style uses the default LaTeX font Computer Modern,
+The default style uses LaTeX to render text and equations. The default font is the default LaTeX font Computer Modern.
 
 ```python
 text.usetex : True
