@@ -3,6 +3,8 @@
 # `Self` was introduced in 3.11, but returning the class type works from 3.7 onwards.
 from __future__ import annotations
 
+import shutil
+
 import logging
 import pathlib
 import subprocess
@@ -208,13 +210,14 @@ class Combine:
 
     @staticmethod
     def _check_cli_available() -> None:
-        try:
-            subprocess.check_output("convert --help", shell=True)
-        except subprocess.CalledProcessError as e:
+        if shutil.which("convert") is None:
             raise ChildProcessError(
-                "Calling `convert --help` did not work. Are you sure you have imagemagick installed?"
-                " If not, resort to the ImageMagick website: https://imagemagick.org/script/download.php"
-            ) from e
+                "I could not find the `convert` CLI. Are you sure you have imagemagick "
+                "installed? If not, resort to the ImageMagick website: "
+                "https://imagemagick.org/script/download.php. You may run `.help()` "
+                "before calling `.save()` to see exactly what the `convert` command was"
+                " trying to do."
+            )
 
     def _run_subprocess(self) -> None:
         # In case several python runtimes use this class, we use a temporary directory
