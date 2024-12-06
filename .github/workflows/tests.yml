@@ -1,9 +1,7 @@
 name: Tests
-
 on:
   - push
   - pull_request
-
 jobs:
   build:
     # timeout-minutes: 460
@@ -16,7 +14,6 @@ jobs:
           - ubuntu-latest
           # - macos-latest
           # - windows-latest  # Haven't figured out how ImageMagick should be installed on win32 yet
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -26,21 +23,19 @@ jobs:
       # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-
+      - name: Print ImageMagick version
+        run: magick --version
       - name: Upgrade pip
         run: |
           pip install --upgrade pip
           pip --version
-
       - name: Install Poetry
         run: |
           pipx install poetry
           poetry --version
-
       - name: Install dependencies
         run: |
           poetry install
-
       - name: Test with pytest
         run: |
           poetry run pytest
