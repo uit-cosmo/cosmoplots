@@ -161,6 +161,10 @@ combining the plots using the `subfigure` environment in latex or similar is not
 option, this is easily done with [`imagemagick`](https://imagemagick.org/index.php) in a
 systematic way.
 
+> [!caution]
+>
+> This uses `imagemagick v7`.
+
 The `Combine` class within the `concat` module implements such procedures, and is also
 conveniently available from the `combine` function in `cosmoplots`.
 
@@ -196,7 +200,7 @@ plot(7)
 plot(8)
 plot(9)
 plot(10)
-# See `magick convert -list font` for all available fonts.
+# See `magick -list font` for all available fonts.
 figs = [f"./assets/{i}.png" for i in range(1, 11)]
 cosmoplots.combine(*figs).using(
     font="JetBrainsMonoNL-NFM-Medium",
