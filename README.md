@@ -214,7 +214,7 @@ plot(10)
 figs = [f"./assets/{i}.png" for i in range(1, 11)]
 cosmoplots.combine(*figs).using(
     font="JetBrainsMonoNL-NFM-Medium",
-    fontsize=60,
+    fontsize=30,
     gravity="southeast",
     pos=(100, 200),
     color="green",
