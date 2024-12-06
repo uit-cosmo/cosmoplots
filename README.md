@@ -196,7 +196,7 @@ plot(7)
 plot(8)
 plot(9)
 plot(10)
-# See `convert -list font` for all available fonts.
+# See `magick -list font` for all available fonts.
 figs = [f"./assets/{i}.png" for i in range(1, 11)]
 cosmoplots.combine(*figs).using(
     font="JetBrainsMonoNL-NFM-Medium",
