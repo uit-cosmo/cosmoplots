@@ -128,6 +128,7 @@ def figure_multiple_rows_columns(rows: int, columns: int,
             height = 0.75/rows
             axes.append(fig.add_axes((left, bottom, width, height)))
             axes[-1].text(label_x, label_y, labels[columns*r+c], transform=axes[-1].transAxes, **kwargs)
+            axes[-1].yaxis.set_label_coords(label_x + 0.04, 0.5, transform=axes[-1].transAxes) # Extra 0.04 by eye to align y-axis label under subfigure label.
 
     return fig, axes
 
