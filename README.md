@@ -63,6 +63,7 @@ for i in range(rows*columns):
     ax[i].set_xlabel("X Axis")
     ax[i].set_ylabel("Y Axis")
     ax[i].plot(i*a)
+# plt.savefig("assets/multifig.png")
 plt.show()
 ```
 
@@ -137,9 +138,6 @@ with plt.style.context("cosmoplots.default"):
 | :--------: | :--------: |
 | ![matplotlib](./assets/matplotlib.png) | ![cosmoplots](./assets/cosmoplots.png) |
 
-<!-- Links -->
-[poetry]: https://python-poetry.org
-
 ## `generate_hex_colors`
 
 This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the number of points of interest.
@@ -152,7 +150,7 @@ plt.style.use(["cosmoplots.default"])
 
 
 color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
-plt.savefig("./assets/hex_colors.png")
+# plt.savefig("./assets/hex_colors.png")
 
 # Print color_list to retrieve the hex numbers
 print(color_list) #['#fde725', '#5ec962', '#21918c', '#3b528b', '#440154']
@@ -162,7 +160,7 @@ ax = plt.gca()
 for i, color in enumerate(color_list):
     ax.plot([1,2],[i,i+1], c = color)
 
-plt.savefig("./assets/hex_colors_example.png")
+# plt.savefig("./assets/hex_colors_example.png")
 plt.show()
 ```
 
