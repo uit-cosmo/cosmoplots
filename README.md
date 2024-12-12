@@ -19,7 +19,7 @@ cd cosmoplots
 poetry install
 ```
 
-### LaTeX dependency
+### LaTeX and Computer Modern dependency
 
 The default style uses LaTeX to render text and equations. The default font is the default LaTeX font Computer Modern.
 
@@ -29,7 +29,8 @@ font.family : serif
 font.serif  : cm
 ```
 
-Text rendering may fail silently without a working LaTeX installation.
+Installations of [TeX Live](https://www.tug.org/texlive/) should include Computer Modern, but it may be manually downloaded from 
+[fontsquirrel](https://www.fontsquirrel.com/fonts/computer-modern).
 
 ## Usage
 
