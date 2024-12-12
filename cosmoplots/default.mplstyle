@@ -19,8 +19,7 @@ legend.handlelength : 1.45  # Show nice, even numbers for different line styles
 # Font and text
 text.usetex : True
 pdf.fonttype : 42
-font.family : serif 
-font.serif  : cm
+font.family : "Latin Modern"
 font.size : 8
 axes.labelsize : 8
 legend.fontsize : 8

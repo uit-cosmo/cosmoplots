@@ -19,18 +19,17 @@ cd cosmoplots
 poetry install
 ```
 
-### LaTeX and Computer Modern dependency
+### LaTeX and Latin Modern dependency
 
-The default style uses LaTeX to render text and equations. The default font is the default LaTeX font Computer Modern.
+The default style uses LaTeX to render text and equations. The default font is Latin Modern.
 
 ```python
 text.usetex : True
-font.family : serif 
-font.serif  : cm
+font.family : "Latin Modern"
 ```
 
-Installations of [TeX Live](https://www.tug.org/texlive/) should include Computer Modern, but it may be manually downloaded from 
-[fontsquirrel](https://www.fontsquirrel.com/fonts/computer-modern).
+Installations of [TeX Live](https://www.tug.org/texlive/) should include Latin Modern, but it may be manually downloaded from
+[here](https://www.gust.org.pl/projects/e-foundry/latin-modern).
 
 ## Usage
 
