@@ -69,6 +69,13 @@ plt.show()
 
 ![multifig](./assets/multifig.png)
 
+#### Position of the y-axis
+
+By default, the x-coordinates of the y-axis labels are aligned with the subfigure labels, but the y-axis label position can be adjusted using
+```python
+ax[i].yaxis.set_label_coords(x_coordinate, y_coordinate)
+```
+
 ## `change_log_axis_base`
 
 ```python
