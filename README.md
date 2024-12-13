@@ -11,7 +11,7 @@ pip install cosmoplots
 ```
 
 If you want the development version you must first clone the repo to your local machine,
-then install the project and its dependencies with [poetry]:
+then install the project and its dependencies with [poetry](https://python-poetry.org):
 
 ```sh
 git clone https://github.com/uit-cosmo/cosmoplots.git
