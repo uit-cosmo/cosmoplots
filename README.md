@@ -11,7 +11,7 @@ pip install cosmoplots
 ```
 
 If you want the development version you must first clone the repo to your local machine,
-then install the project and its dependencies with [poetry]:
+then install the project and its dependencies with [poetry](https://python-poetry.org):
 
 ```sh
 git clone https://github.com/uit-cosmo/cosmoplots.git
@@ -63,10 +63,18 @@ for i in range(rows*columns):
     ax[i].set_xlabel("X Axis")
     ax[i].set_ylabel("Y Axis")
     ax[i].plot(i*a)
+# plt.savefig("assets/multifig.png")
 plt.show()
 ```
 
 ![multifig](./assets/multifig.png)
+
+#### Position of the y-axis
+
+By default, the x-coordinates of the y-axis labels are aligned with the subfigure labels, but the y-axis label position can be adjusted using
+```python
+ax[i].yaxis.set_label_coords(x_coordinate, y_coordinate)
+```
 
 ## `change_log_axis_base`
 
@@ -137,9 +145,6 @@ with plt.style.context("cosmoplots.default"):
 | :--------: | :--------: |
 | ![matplotlib](./assets/matplotlib.png) | ![cosmoplots](./assets/cosmoplots.png) |
 
-<!-- Links -->
-[poetry]: https://python-poetry.org
-
 ## `generate_hex_colors`
 
 This function generates the hex numbers for the colours extracted from a `matplotlib` colour map based on the number of points of interest.
@@ -152,7 +157,7 @@ plt.style.use(["cosmoplots.default"])
 
 
 color_list = cosmoplots.generate_hex_colors(5, 'viridis', show_swatch=True, ascending=True)
-plt.savefig("./assets/hex_colors.png")
+# plt.savefig("./assets/hex_colors.png")
 
 # Print color_list to retrieve the hex numbers
 print(color_list) #['#fde725', '#5ec962', '#21918c', '#3b528b', '#440154']
@@ -162,7 +167,7 @@ ax = plt.gca()
 for i, color in enumerate(color_list):
     ax.plot([1,2],[i,i+1], c = color)
 
-plt.savefig("./assets/hex_colors_example.png")
+# plt.savefig("./assets/hex_colors_example.png")
 plt.show()
 ```
 
