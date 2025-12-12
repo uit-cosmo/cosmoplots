@@ -94,6 +94,7 @@ def change_log_axis_base(
 def figure_multiple_rows_columns(rows: int, columns: int, 
                                  labels: Union[List[str], None] = None,
                                  label_x: float = -0.2, label_y: float = 0.95,
+                                 with_titles: bool = False,
                                  **kwargs) -> Tuple[Figure, List[Axes]]:
     """Returns a figure with axes which is appropriate for (rows, columns) subfigures.
 
@@ -107,6 +108,8 @@ def figure_multiple_rows_columns(rows: int, columns: int,
         The labels to be applied to each subfigure. Defaults to (a), (b), (c), ...
     label_x and label_y: float
         x- and y- positions of the labels relative to each Axes object.
+    with_titles: bool
+        Adds extra top padding to ensure subplot titles are fully visible in the saved figure.
     **kwargs:
         Additional keyword arguments to be passed to Axes.text. 
         
@@ -117,15 +120,18 @@ def figure_multiple_rows_columns(rows: int, columns: int,
     List[plt.Axes]
         A list of all the axes objects owned by the figure
     """
-    fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
+    title_pad = 0.10*2.08277 if with_titles else 0
+    s = rows/(rows+0.10) if with_titles else 1 # Scaling factor to accommodate for additional title pad
+                                     
+    fig = plt.figure(figsize = (columns*3.37, rows*2.08277 + title_pad))
     axes = []
     labels = labels or [r"$\mathrm{{({})}}$".format(chr(97+l)) for l in range(rows*columns)] 
     for r in range(rows):
         for c in range(columns):
             left = (0.2)/columns + c/columns
-            bottom = (0.2)/rows + (rows-1-r)/rows # Start at the top
+            bottom = s * ((0.2)/rows + (rows-1-r)/rows) # Start at the top
             width = 0.75/columns
-            height = 0.75/rows
+            height = s * 0.75/rows
             axes.append(fig.add_axes((left, bottom, width, height)))
             axes[-1].text(label_x, label_y, labels[columns*r+c], transform=axes[-1].transAxes, **kwargs)
             axes[-1].yaxis.set_label_coords(label_x + 0.04, 0.5, transform=axes[-1].transAxes) # Extra 0.04 by eye to align y-axis label under subfigure label.
