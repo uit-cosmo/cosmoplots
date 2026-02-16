@@ -8,7 +8,7 @@ license = "MIT License"
 readme = 'README.md'
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4"
+python = ">=3.9"
 numpy = ">=1.15.0"
 matplotlib = ">=3.3.2"
 importlib-metadata = "^6.6.0"
