@@ -41,5 +41,3 @@ ytick.right : True
 # All ticks point inward
 xtick.direction : "in"
 ytick.direction : "in"
-# Tick formatting in log scale
-axes.formatter.min_exponent : 2
