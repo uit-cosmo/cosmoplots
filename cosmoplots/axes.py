@@ -91,6 +91,15 @@ def change_log_axis_base(
         )
     return axes
 
+def _subfigure_label(index: int) -> str:
+    """Return the subfigure letter for a 0-based index: a, ..., z, aa, ab, ..."""
+    label = ""
+    index += 1
+    while index > 0:
+        index, remainder = divmod(index - 1, 26)
+        label = chr(97 + remainder) + label
+    return label
+
 def figure_multiple_rows_columns(rows: int, columns: int, 
                                  labels: Union[List[str], None] = None,
                                  label_x: float = -0.2, label_y: float = 0.95,
@@ -104,7 +113,7 @@ def figure_multiple_rows_columns(rows: int, columns: int,
     columns : int
         The number of columns in the figure
     labels : List[str] | None
-        The labels to be applied to each subfigure. Defaults to (a), (b), (c), ...
+        The labels to be applied to each subfigure. Defaults to (a), (b), (c), ..., (z), (aa), (ab), ...
     label_x and label_y: float
         x- and y- positions of the labels relative to each Axes object.
     **kwargs:
@@ -119,7 +128,7 @@ def figure_multiple_rows_columns(rows: int, columns: int,
     """
     fig = plt.figure(figsize = (columns*3.37, rows*2.08277))
     axes = []
-    labels = labels or [r"$\mathrm{{({})}}$".format(chr(97+l)) for l in range(rows*columns)] 
+    labels = labels or [r"$\mathrm{{({})}}$".format(_subfigure_label(l)) for l in range(rows*columns)] 
     for r in range(rows):
         for c in range(columns):
             left = (0.2)/columns + c/columns
