@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
-from matplotlib import cm, colors
+from matplotlib import colors
 from typing import List
 
 
@@ -68,7 +68,7 @@ def generate_hex_colors(
 
     """
 
-    cmap = cm.get_cmap(color_map, number_data_points)
+    cmap = plt.get_cmap(color_map, number_data_points)
 
     color_list = []
 
